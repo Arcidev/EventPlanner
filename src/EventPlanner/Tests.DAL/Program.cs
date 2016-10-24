@@ -23,7 +23,7 @@ namespace Tests.DAL
             };
 
             var events = new EventService();
-            await events.Add(entity);
+            await events.AddAsync(entity);
 
             var eventsList = await events.GetByAuthor("asdefg");
         }

@@ -1,4 +1,5 @@
 ﻿using MongoDB.Driver;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace EventPlanner.DAL.DataAccess
@@ -12,10 +13,16 @@ namespace EventPlanner.DAL.DataAccess
             this.collectionName = collectionName;
         }
 
-        public async Task Add(T entity)
+        public async Task AddAsync(T entity)
         {
             var collection = GetCollection();
             await collection.InsertOneAsync(entity);
+        }
+
+        public async Task<IList<T>> FindAsync(FilterDefinition<T> filter)
+        {
+            var collection = GetCollection();
+            return await (await collection.FindAsync(filter)).ToListAsync();
         }
 
         protected IMongoCollection<T> GetCollection()

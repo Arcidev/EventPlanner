@@ -11,9 +11,8 @@ namespace EventPlanner.DAL.DataAccess
 
         public async Task<IList<Event>> GetByAuthor(string authorId)
         {
-            var collection = GetCollection();
             var filter = Builders<Event>.Filter.Eq("AuthorId", authorId);
-            return await (await collection.FindAsync(filter)).ToListAsync();
+            return await FindAsync(filter);
         }
     }
 }
