@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace EventPlanner.DAL.DataAccess
 {
-    public class EventService : BaseService<Event>
+    public class EventRepository : BaseRepository<Event>
     {
-        public EventService() : base("events") { }
+        public EventRepository() : base("events") { }
 
-        public async Task<IList<Event>> GetByAuthor(string authorId)
+        public async Task<IEnumerable<Event>> GetByAuthor(string authorId)
         {
             var filter = Builders<Event>.Filter.Eq("AuthorId", authorId);
             return await FindAsync(filter);

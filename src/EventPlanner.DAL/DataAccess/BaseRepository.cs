@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 
 namespace EventPlanner.DAL.DataAccess
 {
-    public abstract class BaseService<T> where T : class
+    public abstract class BaseRepository<T> where T : class
     {
         private string collectionName;
 
-        public BaseService(string collectionName)
+        protected BaseRepository(string collectionName)
         {
             this.collectionName = collectionName;
         }
@@ -19,7 +19,7 @@ namespace EventPlanner.DAL.DataAccess
             await collection.InsertOneAsync(entity);
         }
 
-        public async Task<IList<T>> FindAsync(FilterDefinition<T> filter)
+        public async Task<IEnumerable<T>> FindAsync(FilterDefinition<T> filter)
         {
             var collection = GetCollection();
             return await (await collection.FindAsync(filter)).ToListAsync();

@@ -22,10 +22,10 @@ namespace Tests.DAL
                 AuthorId = "asdefg"
             };
 
-            var events = new EventService();
-            await events.AddAsync(entity);
+            var repo = new EventRepository();
+            await repo.AddAsync(entity);
 
-            var eventsList = await events.GetByAuthor("asdefg");
+            var eventsList = await repo.GetByAuthor("asdefg");
         }
     }
 }

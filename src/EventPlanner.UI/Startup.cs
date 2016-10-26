@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -75,7 +71,12 @@ namespace EventPlanner.UI
 
             app.UseIdentity();
 
-            // Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
+            
+            app.UseGoogleAuthentication(new GoogleOptions()
+            {
+                ClientId = "955658822338-ktd7sml61p70svs87v57el4a806555gh.apps.googleusercontent.com",
+                ClientSecret = "BDZjNOoh5cpI_vWFFxhD6AKz"
+            });
 
             app.UseMvc(routes =>
             {
