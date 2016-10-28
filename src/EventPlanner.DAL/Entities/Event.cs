@@ -2,7 +2,7 @@
 
 namespace EventPlanner.DAL.Entities
 {
-    public class Event
+    public class Event : IEntity
     {
         public ObjectId _id { get; set; }
 

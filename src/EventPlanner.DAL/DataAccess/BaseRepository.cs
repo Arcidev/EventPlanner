@@ -1,10 +1,12 @@
-﻿using MongoDB.Driver;
+﻿using EventPlanner.DAL.Entities;
+using MongoDB.Bson;
+using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace EventPlanner.DAL.DataAccess
 {
-    public abstract class BaseRepository<T> where T : class
+    public abstract class BaseRepository<T> where T : IEntity
     {
         private string collectionName;
 
@@ -22,7 +24,26 @@ namespace EventPlanner.DAL.DataAccess
         public async Task<IEnumerable<T>> FindAsync(FilterDefinition<T> filter)
         {
             var collection = GetCollection();
-            return await (await collection.FindAsync(filter)).ToListAsync();
+            return await collection.Find(filter).ToListAsync();
+        }
+
+        public async Task DeleteAsync(ObjectId id)
+        {
+            var collection = GetCollection();
+            await collection.DeleteOneAsync(x => x._id == id);
+        }
+
+        public async Task<T> GetAsync(ObjectId id)
+        {
+            var collection = GetCollection();
+            return await collection.Find(x => x._id == id).FirstOrDefaultAsync();
+        }
+
+        public async Task UpdateAsync(ObjectId id, UpdateDefinition<T> updateDefinition)
+        {
+            var collection = GetCollection();
+            var filter = Builders<T>.Filter.Eq("_id", id);
+            await collection.UpdateOneAsync(filter, updateDefinition);
         }
 
         protected IMongoCollection<T> GetCollection()
