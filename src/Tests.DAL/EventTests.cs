@@ -1,6 +1,5 @@
 ﻿using EventPlanner.DAL.DataAccess;
 using EventPlanner.DAL.Entities;
-using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -12,7 +11,6 @@ namespace Tests.DAL
     public class EventTests
     {
         private EventRepository eventRepository = new EventRepository();
-        private UserRepository userRepository = new UserRepository();
 
         [Fact]
         public async Task TestCRUD()

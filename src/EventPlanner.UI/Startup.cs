@@ -1,9 +1,13 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using EventPlanner.BL.Facades;
+using EventPlanner.BL.Facades.Interfaces;
+using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Security.Claims;
 
 namespace EventPlanner.UI
 {
@@ -14,6 +18,8 @@ namespace EventPlanner.UI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            services.AddTransient<IUserFacade, UserFacade>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -25,6 +31,8 @@ namespace EventPlanner.UI
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            BL.Configuration.AutoMapper.Init();
 
             app.UseStaticFiles();
 
@@ -43,7 +51,18 @@ namespace EventPlanner.UI
                 AuthenticationScheme = "Google",
                 CallbackPath = "/googleAuthCallback",
                 SignInScheme = "Cookie",
-                AutomaticAuthenticate = true
+                AutomaticAuthenticate = true,
+                Scope = { "openid", "profile", "email" },
+                Events = new OAuthEvents
+                {
+                    OnTicketReceived = async context =>
+                    {
+                        // Ensure user exists
+                        var userService = context.HttpContext.RequestServices.GetService<IUserFacade>();
+                        await userService.CreateOrGetUser(context.Principal.FindFirst(ClaimTypes.Email).Value);
+                    }
+                }
+
             });
 
             app.UseMvc(routes =>

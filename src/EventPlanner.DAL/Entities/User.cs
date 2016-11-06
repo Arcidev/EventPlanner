@@ -1,7 +1,6 @@
 ﻿using System;
 using MongoDB.Bson;
 using System.Collections.Generic;
-using MongoDB.Bson.Serialization.Attributes;
 
 namespace EventPlanner.DAL.Entities
 {
