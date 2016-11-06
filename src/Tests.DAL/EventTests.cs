@@ -3,6 +3,7 @@ using EventPlanner.DAL.Entities;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -18,18 +19,17 @@ namespace Tests.DAL
         {
             var entity = new Event()
             {
-                AuthorId = "TestCrud",
-                Places = new Place[] {
+                Places = new List<Place> {
                     new Place(5, 7),
                     new Place(3, 4)
                 },
-                Times = new DateTime[]
+                Times = new List<DateTime>
                 {
                     new DateTime()
                 },
-                Users = new ObjectId[]
+                SenderList = new List<string>
                 {
-                    new ObjectId()
+                    "randomEmail"
                 }
             };
 
@@ -39,13 +39,13 @@ namespace Tests.DAL
             var e = await eventRepository.GetAsync(entity.Id);
             Assert.NotNull(e);
             Assert.Equal(entity.Id, e.Id);
-            Assert.Equal("TestCrud", e.AuthorId);
+            Assert.Equal(new List<string> { "randomEmail" }, e.SenderList);
 
-            var update = Builders<Event>.Update.Set(nameof(entity.AuthorId), "TestCrudUpdate");
+            var update = Builders<Event>.Update.Set(nameof(entity.SenderList), new List<string> { "TestCrudUpdate" });
             await eventRepository.UpdateAsync(entity.Id, update);
             e = await eventRepository.GetAsync(entity.Id);
             Assert.NotNull(e);
-            Assert.Equal("TestCrudUpdate", e.AuthorId);
+            Assert.Equal(new List<string> { "TestCrudUpdate" }, e.SenderList);
 
             await eventRepository.DeleteAsync(entity.Id);
             Assert.Null(await eventRepository.GetAsync(entity.Id));

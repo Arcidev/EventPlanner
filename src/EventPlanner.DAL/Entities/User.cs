@@ -11,8 +11,8 @@ namespace EventPlanner.DAL.Entities
 
         public string Email { get; set; }
 
-        public Dictionary<Place, DateTime []> Choices { get; set; }
+        public Dictionary<Place, List<DateTime>> Choices { get; set; }
 
-        public ObjectId [] CreatedEvents { get; set; }
+        public List<ObjectId> CreatedEvents { get; set; }
     }
 }
