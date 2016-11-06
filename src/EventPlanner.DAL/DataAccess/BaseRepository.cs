@@ -30,19 +30,19 @@ namespace EventPlanner.DAL.DataAccess
         public async Task DeleteAsync(ObjectId id)
         {
             var collection = GetCollection();
-            await collection.DeleteOneAsync(x => x._id == id);
+            await collection.DeleteOneAsync(x => x.Id == id);
         }
 
         public async Task<T> GetAsync(ObjectId id)
         {
             var collection = GetCollection();
-            return await collection.Find(x => x._id == id).FirstOrDefaultAsync();
+            return await collection.Find(x => x.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task UpdateAsync(ObjectId id, UpdateDefinition<T> updateDefinition)
         {
             var collection = GetCollection();
-            var filter = Builders<T>.Filter.Eq("_id", id);
+            var filter = Builders<T>.Filter.Eq("Id", id);
             await collection.UpdateOneAsync(filter, updateDefinition);
         }
 

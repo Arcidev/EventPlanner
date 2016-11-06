@@ -1,9 +1,12 @@
 ﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace EventPlanner.DAL.Entities
 {
     public interface IEntity
     {
-        ObjectId _id { get; set; }
+
+        [BsonElement("_id")]
+        ObjectId Id { get; set; }
     }
 }
