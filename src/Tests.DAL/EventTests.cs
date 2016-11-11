@@ -17,15 +17,15 @@ namespace Tests.DAL
         {
             var entity = new Event()
             {
-                Places = new List<Place> {
+                Places = new[] {
                     new Place(5, 7),
                     new Place(3, 4)
                 },
-                Times = new List<DateTime>
+                Times = new[]
                 {
                     new DateTime()
                 },
-                SenderList = new List<string>
+                SenderList = new[]
                 {
                     "randomEmail"
                 }
@@ -39,7 +39,7 @@ namespace Tests.DAL
             Assert.Equal(entity.Id, e.Id);
             Assert.Equal(new List<string> { "randomEmail" }, e.SenderList);
 
-            var update = Builders<Event>.Update.Set(nameof(entity.SenderList), new List<string> { "TestCrudUpdate" });
+            var update = Builders<Event>.Update.Set(x => x.SenderList, new List<string> { "TestCrudUpdate" });
             await eventRepository.UpdateAsync(entity.Id, update);
             e = await eventRepository.GetAsync(entity.Id);
             Assert.NotNull(e);

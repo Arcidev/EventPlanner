@@ -26,7 +26,7 @@ namespace Tests.DAL
             Assert.Equal(entity.Id, user.Id);
             Assert.Equal("test@mail.sk", user.Email);
 
-            var update = Builders<User>.Update.Set(nameof(entity.Email), "test2@mail.sk");
+            var update = Builders<User>.Update.Set(x => x.Email, "test2@mail.sk");
             await userRepository.UpdateAsync(entity.Id, update);
             user = await userRepository.GetAsync(entity.Id);
             Assert.NotNull(user);

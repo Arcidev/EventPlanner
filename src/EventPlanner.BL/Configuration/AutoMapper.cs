@@ -11,6 +11,12 @@ namespace EventPlanner.BL.Configuration
             Mapper.Initialize(config =>
             {
                 config.CreateMap<User, UserDTO>();
+
+                config.CreateMap<Event, EventDTO>();
+                config.CreateMap<EventCreateDTO, Event>();
+
+                config.CreateMap<Place, PlaceDTO>();
+                config.CreateMap<PlaceDTO, Place>();
             });
         }
     }

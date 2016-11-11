@@ -10,8 +10,8 @@ namespace EventPlanner.DAL.Entities
 
         public string Email { get; set; }
 
-        public Dictionary<Place, List<DateTime>> Choices { get; set; }
+        public IDictionary<Place, IList<DateTime>> Choices { get; set; }
 
-        public List<ObjectId> CreatedEvents { get; set; }
+        public IList<ObjectId> CreatedEvents { get; set; }
     }
 }

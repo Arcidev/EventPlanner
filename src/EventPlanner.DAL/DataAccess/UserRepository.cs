@@ -12,7 +12,7 @@ namespace EventPlanner.DAL.DataAccess
 
         public async Task<User> GetByEmailAsync(string email)
         {
-            var filter = Builders<User>.Filter.Eq((x => x.Email), email);
+            var filter = Builders<User>.Filter.Eq(x => x.Email, email);
             return (await FindAsync(filter)).FirstOrDefault();
         }
     }
