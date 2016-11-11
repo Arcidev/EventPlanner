@@ -1,4 +1,5 @@
-﻿using EventPlanner.DAL.Entities;
+﻿using EventPlanner.DAL.DataAccess.Interfaces;
+using EventPlanner.DAL.Entities;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EventPlanner.DAL.DataAccess
 {
-    public abstract class BaseRepository<T> where T : IEntity
+    public abstract class BaseRepository<T> : IBaseRepository<T> where T : IEntity
     {
         private string collectionName;
 

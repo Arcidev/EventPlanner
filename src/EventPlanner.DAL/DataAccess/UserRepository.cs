@@ -1,11 +1,12 @@
-﻿using EventPlanner.DAL.Entities;
+﻿using EventPlanner.DAL.DataAccess.Interfaces;
+using EventPlanner.DAL.Entities;
 using MongoDB.Driver;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace EventPlanner.DAL.DataAccess
 {
-    public class UserRepository : BaseRepository<User>
+    public class UserRepository : BaseRepository<User>, IUserRepository
     {
         public UserRepository() : base("users") { }
 

@@ -1,4 +1,5 @@
-﻿using EventPlanner.BL.Facades;
+﻿using EventPlanner.BL.Configuration;
+using EventPlanner.BL.Facades;
 using EventPlanner.BL.Facades.Interfaces;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Builder;
@@ -19,6 +20,7 @@ namespace EventPlanner.UI
         {
             services.AddMvc();
 
+            services.ConfigureBLServices();
             services.AddTransient<IUserFacade, UserFacade>();
         }
 
