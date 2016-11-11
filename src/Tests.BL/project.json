@@ -1,0 +1,24 @@
+﻿{
+  "version": "1.0.0-*",
+  "testRunner": "xunit",
+  "dependencies": {
+    "xunit": "2.2.0-beta3-build3402",
+    "Microsoft.NETCore.App": "1.0.1",
+    "Microsoft.Extensions.DependencyInjection.Abstractions": "1.0.0",
+    "Microsoft.Extensions.DependencyInjection": "1.0.0",
+    "EventPlanner.BL": "1.0.0-*",
+    "dotnet-test-xunit": "2.2.0-preview2-build1029"
+  },
+
+  "frameworks": {
+    "netcoreapp1.0": {
+      "dependencies": {
+      }
+    }
+  },
+
+  "runtimes": {
+    "win10-x64": {},
+    "win81-x64": {}
+  }
+}
