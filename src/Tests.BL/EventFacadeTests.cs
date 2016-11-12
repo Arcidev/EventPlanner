@@ -33,7 +33,7 @@ namespace Tests.BL
         public async Task TestCreateEvent()
         {
             var user = await GetUser("test@mail.sk");
-            var eventDto = CreateEvent(user.Id);
+            var eventDto = await CreateEvent(user.Id);
             Assert.NotNull(eventDto);
 
             var eventFacade = serviceProvider.GetRequiredService<IEventFacade>();
