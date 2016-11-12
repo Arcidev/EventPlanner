@@ -1,5 +1,6 @@
-﻿using System;
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson.Serialization.Options;
 using System.Collections.Generic;
 
 namespace EventPlanner.DAL.Entities
@@ -10,7 +11,8 @@ namespace EventPlanner.DAL.Entities
 
         public string Email { get; set; }
 
-        public IDictionary<Place, IList<DateTime>> Choices { get; set; }
+        [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfDocuments)]
+        public IDictionary<ObjectId, UserEvent> UserEvents { get; set; }
 
         public IList<ObjectId> CreatedEvents { get; set; }
     }

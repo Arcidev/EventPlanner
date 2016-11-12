@@ -15,8 +15,9 @@ namespace EventPlanner.BL.Configuration
                 config.CreateMap<Event, EventDTO>();
                 config.CreateMap<EventCreateDTO, Event>();
 
-                config.CreateMap<Place, PlaceDTO>();
-                config.CreateMap<PlaceDTO, Place>();
+                config.CreateMap<Place, PlaceDTO>().ReverseMap();
+
+                config.CreateMap<UserEventDTO, UserEvent>().ReverseMap();
             });
         }
     }
