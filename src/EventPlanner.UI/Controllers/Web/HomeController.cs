@@ -9,7 +9,7 @@ namespace EventPlanner.UI.Controllers.Web
         // GET: /Home/Index
         public IActionResult Index()
         {
-            return View();
+            return new VirtualFileResult("~/index.html", "text/html");
         }
     }
 }
