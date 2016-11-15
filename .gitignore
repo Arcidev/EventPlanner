@@ -250,3 +250,4 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
+/src/EventPlanner.UI/89889688147bd7575d6327160d64e760.svg

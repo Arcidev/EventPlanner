@@ -45,26 +45,25 @@ namespace EventPlanner.UI
                 AutomaticAuthenticate = true
             });
 
-            //app.UseGoogleAuthentication(new GoogleOptions()
-            //{
-            //    ClientId = Environment.GetEnvironmentVariable("GoogleClientId"),
-            //    ClientSecret = Environment.GetEnvironmentVariable("GoogleSecret"),
-            //    AuthenticationScheme = "Google",
-            //    CallbackPath = "/googleAuthCallback",
-            //    SignInScheme = "Cookie",
-            //    AutomaticAuthenticate = true,
-            //    Scope = { "openid", "profile", "email" },
-            //    Events = new OAuthEvents
-            //    {
-            //        OnTicketReceived = async context =>
-            //        {
-            //            // Ensure user exists
-            //            var userService = context.HttpContext.RequestServices.GetService<IUserFacade>();
-            //            await userService.CreateOrGetUser(context.Principal.FindFirst(ClaimTypes.Email).Value);
-            //        }
-            //    }
-
-            //});
+            app.UseGoogleAuthentication(new GoogleOptions()
+            {
+                ClientId = Environment.GetEnvironmentVariable("GoogleClientId"),
+                ClientSecret = Environment.GetEnvironmentVariable("GoogleSecret"),
+                AuthenticationScheme = "Google",
+                CallbackPath = "/googleAuthCallback",
+                SignInScheme = "Cookie",
+                AutomaticAuthenticate = true,
+                Scope = { "openid", "profile", "email" },
+                Events = new OAuthEvents
+                {
+                    OnTicketReceived = async context =>
+                    {
+                        // Ensure user exists
+                        var userService = context.HttpContext.RequestServices.GetService<IUserFacade>();
+                        await userService.CreateOrGetUser(context.Principal.FindFirst(ClaimTypes.Email).Value);
+                    }
+                }
+            });
 
             app.UseMvc(routes =>
             {
