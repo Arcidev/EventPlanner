@@ -7,79 +7,17 @@ import GoogleMap from 'google-map-react';
 import 'bootstrap/dist/css/bootstrap.css';
 import '../../Styles/site.css';
 
-
-
-
 const baseUrl = 'http://localhost:13692/';
 
-var List = React.createClass({
-    render: function() {
-        var dict = this.props.data;
-        return (<div>
-            {  Object.getOwnPropertyNames(dict).map(function(item) {
-              return <div>{dict[item]}</div>;
-          })
-            }
-        </div>);
-    }
-});
-
-
-class ChoiceTableRow extends React.Component {
-    constructor()
-    {
-        super();
-        this.state = {choices: [true,false,true,true], userMail: "ahoj", userId: -1};
-    }
-
-    render() {
-        var choices = this.state.choices;
-
-        return (
-            <div className="row">
-                <div className="btn btn-primary">
-                    {this.state.userMail}
-                </div>
-                <div className="btn btn-default">
-                    {choices.map(function(item) {
-                        if(item)
-                        {
-                            return <span className="glyphicon glyphicon-ok-sign"></span>;
-                        }
-                        return <span className="glyphicon glyphicon-remove-sign"></span>;
-                    })};
-        </div>
-    </div>
-        );
-    }
-}
-
 class EventDetailLayout extends React.Component {
-
-    constructor()
-    {
-        super();
-        this.state = {choices: []};
-    }
-
-    doStuff(e) {
-        axios
-            .get(`${baseUrl}/api/dashboard`)
-            .then(response => {
-                this.setState({
-                    choices: response.data.choices
-                });
-            });
-    }
     render() {
         var center = { lat: 59.938043, lng: 30.337157 };
         var zoom = 9;
         return (
                 <div className="panel panel-primary">
                     <div className="thumbnail ep-map">
-                        <GoogleMap
-                            defaultCenter={center}
-                            defaultZoom={zoom}>
+                        <GoogleMap defaultCenter={center}
+                                    defaultZoom={zoom}>
                             <div className="ep-marker">place A</div>
                         </GoogleMap>
                     </div>
@@ -106,7 +44,7 @@ class EventDetailLayout extends React.Component {
                                 <td><span className="glyphicon glyphicon-ok"></span></td>
                             </tr>
                             <tr>
-                                <td><input tyle="text" className="form-control" /></td>
+                                <td><input type="text" className="form-control ep-width200" /></td>
                                 <td><input type="checkbox" /></td>
                                 <td><input type="checkbox" /></td>
                                 <td><input type="checkbox" /></td>
@@ -118,5 +56,41 @@ class EventDetailLayout extends React.Component {
     }
 }
 
-const app = document.getElementById('event-detail');
-ReactDOM.render(<EventDetailLayout />, app);
+class EventDashboardLayout extends React.Component {
+    render() {
+        return (
+            <div className="row">
+                <div className="panel panel-primary">
+                    <div className="panel-heading">My events - Created</div>
+                    <div className="panel-body">
+                        <div className="row ep-event">
+                            <h4 className="col-md-3">Event Name</h4>
+                            <div className="col-md-9">
+                                <div className="btn-group pull-right">
+                                    <button className="btn btn-default navbar-btn nav-pills"><span className="glyphicon glyphicon-edit"></span>Edit event</button>
+                                    <button className="btn btn-default navbar-btn nav-pills"><span className="glyphicon glyphicon-link"></span>Copy link</button>
+                                    <button className="btn btn-default navbar-btn nav-pills"><span className="glyphicon glyphicon-copy"></span>Fill in</button>
+                                </div>
+                            </div>
+                         </div>  
+                    </div>
+                </div>
+            </div>
+            );
+    }
+}
+
+class EventEditLayout extends React.Component {
+    render() {
+        
+    }
+}
+
+const eventDetail = document.getElementById('event-detail');
+if (eventDetail) {
+    ReactDOM.render(<EventDetailLayout />, eventDetail);
+}
+const dashboard = document.getElementById('dashboard');
+if (dashboard) {
+    ReactDOM.render(<EventDashboardLayout />, dashboard);
+}

@@ -26,3 +26,21 @@
   border: 10px solid;
   border-color: #cd5c5c transparent transparent transparent;
 }
+
+.ep-width200 {
+    width: 200px;
+}
+
+.ep-width150 {
+    width: 150px;
+}
+
+.ep-width-streatch {
+    width: 100%;
+}
+
+.ep-event {
+    border: 2px solid #1e90ff;
+    border-radius: 2px;
+    margin: 10px;
+}

@@ -82,92 +82,16 @@
 
 	var baseUrl = 'http://localhost:13692/';
 
-	var List = _react2.default.createClass({
-	    displayName: "List",
-
-	    render: function render() {
-	        var dict = this.props.data;
-	        return _react2.default.createElement(
-	            "div",
-	            null,
-	            Object.getOwnPropertyNames(dict).map(function (item) {
-	                return _react2.default.createElement(
-	                    "div",
-	                    null,
-	                    dict[item]
-	                );
-	            })
-	        );
-	    }
-	});
-
-	var ChoiceTableRow = function (_React$Component) {
-	    _inherits(ChoiceTableRow, _React$Component);
-
-	    function ChoiceTableRow() {
-	        _classCallCheck(this, ChoiceTableRow);
-
-	        var _this = _possibleConstructorReturn(this, (ChoiceTableRow.__proto__ || Object.getPrototypeOf(ChoiceTableRow)).call(this));
-
-	        _this.state = { choices: [true, false, true, true], userMail: "ahoj", userId: -1 };
-	        return _this;
-	    }
-
-	    _createClass(ChoiceTableRow, [{
-	        key: "render",
-	        value: function render() {
-	            var choices = this.state.choices;
-
-	            return _react2.default.createElement(
-	                "div",
-	                { className: "row" },
-	                _react2.default.createElement(
-	                    "div",
-	                    { className: "btn btn-primary" },
-	                    this.state.userMail
-	                ),
-	                _react2.default.createElement(
-	                    "div",
-	                    { className: "btn btn-default" },
-	                    choices.map(function (item) {
-	                        if (item) {
-	                            return _react2.default.createElement("span", { className: "glyphicon glyphicon-ok-sign" });
-	                        }
-	                        return _react2.default.createElement("span", { className: "glyphicon glyphicon-remove-sign" });
-	                    }),
-	                    ";"
-	                )
-	            );
-	        }
-	    }]);
-
-	    return ChoiceTableRow;
-	}(_react2.default.Component);
-
-	var EventDetailLayout = function (_React$Component2) {
-	    _inherits(EventDetailLayout, _React$Component2);
+	var EventDetailLayout = function (_React$Component) {
+	    _inherits(EventDetailLayout, _React$Component);
 
 	    function EventDetailLayout() {
 	        _classCallCheck(this, EventDetailLayout);
 
-	        var _this2 = _possibleConstructorReturn(this, (EventDetailLayout.__proto__ || Object.getPrototypeOf(EventDetailLayout)).call(this));
-
-	        _this2.state = { choices: [] };
-	        return _this2;
+	        return _possibleConstructorReturn(this, (EventDetailLayout.__proto__ || Object.getPrototypeOf(EventDetailLayout)).apply(this, arguments));
 	    }
 
 	    _createClass(EventDetailLayout, [{
-	        key: "doStuff",
-	        value: function doStuff(e) {
-	            var _this3 = this;
-
-	            _axios2.default.get(baseUrl + "/api/dashboard").then(function (response) {
-	                _this3.setState({
-	                    choices: response.data.choices
-	                });
-	            });
-	        }
-	    }, {
 	        key: "render",
 	        value: function render() {
 	            var center = { lat: 59.938043, lng: 30.337157 };
@@ -180,8 +104,7 @@
 	                    { className: "thumbnail ep-map" },
 	                    _react2.default.createElement(
 	                        _googleMapReact2.default,
-	                        {
-	                            defaultCenter: center,
+	                        { defaultCenter: center,
 	                            defaultZoom: zoom },
 	                        _react2.default.createElement(
 	                            "div",
@@ -274,7 +197,7 @@
 	                            _react2.default.createElement(
 	                                "td",
 	                                null,
-	                                _react2.default.createElement("input", { tyle: "text", className: "form-control" })
+	                                _react2.default.createElement("input", { type: "text", className: "form-control ep-width200" })
 	                            ),
 	                            _react2.default.createElement(
 	                                "td",
@@ -301,8 +224,84 @@
 	    return EventDetailLayout;
 	}(_react2.default.Component);
 
-	var app = document.getElementById('event-detail');
-	_reactDom2.default.render(_react2.default.createElement(EventDetailLayout, null), app);
+	var EventDashboardLayout = function (_React$Component2) {
+	    _inherits(EventDashboardLayout, _React$Component2);
+
+	    function EventDashboardLayout() {
+	        _classCallCheck(this, EventDashboardLayout);
+
+	        return _possibleConstructorReturn(this, (EventDashboardLayout.__proto__ || Object.getPrototypeOf(EventDashboardLayout)).apply(this, arguments));
+	    }
+
+	    _createClass(EventDashboardLayout, [{
+	        key: "render",
+	        value: function render() {
+	            return _react2.default.createElement(
+	                "div",
+	                { className: "row" },
+	                _react2.default.createElement(
+	                    "div",
+	                    { className: "panel panel-primary" },
+	                    _react2.default.createElement(
+	                        "div",
+	                        { className: "panel-heading" },
+	                        "My events - Created"
+	                    ),
+	                    _react2.default.createElement(
+	                        "div",
+	                        { className: "panel-body" },
+	                        _react2.default.createElement(
+	                            "div",
+	                            { className: "row ep-event" },
+	                            _react2.default.createElement(
+	                                "h4",
+	                                { className: "col-md-3" },
+	                                "Event Name"
+	                            ),
+	                            _react2.default.createElement(
+	                                "div",
+	                                { className: "col-md-9" },
+	                                _react2.default.createElement(
+	                                    "div",
+	                                    { className: "btn-group pull-right" },
+	                                    _react2.default.createElement(
+	                                        "button",
+	                                        { className: "btn btn-default navbar-btn nav-pills" },
+	                                        _react2.default.createElement("span", { className: "glyphicon glyphicon-edit" }),
+	                                        "Edit event"
+	                                    ),
+	                                    _react2.default.createElement(
+	                                        "button",
+	                                        { className: "btn btn-default navbar-btn nav-pills" },
+	                                        _react2.default.createElement("span", { className: "glyphicon glyphicon-link" }),
+	                                        "Copy link"
+	                                    ),
+	                                    _react2.default.createElement(
+	                                        "button",
+	                                        { className: "btn btn-default navbar-btn nav-pills" },
+	                                        _react2.default.createElement("span", { className: "glyphicon glyphicon-copy" }),
+	                                        "Fill in"
+	                                    )
+	                                )
+	                            )
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+
+	    return EventDashboardLayout;
+	}(_react2.default.Component);
+
+	var eventDetail = document.getElementById('event-detail');
+	if (eventDetail) {
+	    _reactDom2.default.render(_react2.default.createElement(EventDetailLayout, null), eventDetail);
+	}
+	var dashboard = document.getElementById('dashboard');
+	if (dashboard) {
+	    _reactDom2.default.render(_react2.default.createElement(EventDashboardLayout, null), dashboard);
+	}
 
 /***/ },
 /* 1 */
@@ -30193,7 +30192,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(220)();
-	exports.push([module.id, "body {\r\n}\r\n\r\n.ep-map {\r\n    height: 300px;\r\n}\r\n\r\n.ep-marker {\r\n    height: 30px;\r\n    width: 80px;\r\n    border: 2px solid #cd5c5c;\r\n    color: #cd5c5c;\r\n    font-weight: bolder;\r\n    background-color: #ffffff;\r\n    border-radius: 15px;\r\n    padding: 5px 10px;\r\n}\r\n\r\n.ep-marker:after {\r\n  content: ' ';\r\n  position: absolute;\r\n  width: 0;\r\n  height: 0;\r\n  left: 40px;\r\n  top: 30px;\r\n  border: 10px solid;\r\n  border-color: #cd5c5c transparent transparent transparent;\r\n}", ""]);
+	exports.push([module.id, "body {\r\n}\r\n\r\n.ep-map {\r\n    height: 300px;\r\n}\r\n\r\n.ep-marker {\r\n    height: 30px;\r\n    width: 80px;\r\n    border: 2px solid #cd5c5c;\r\n    color: #cd5c5c;\r\n    font-weight: bolder;\r\n    background-color: #ffffff;\r\n    border-radius: 15px;\r\n    padding: 5px 10px;\r\n}\r\n\r\n.ep-marker:after {\r\n  content: ' ';\r\n  position: absolute;\r\n  width: 0;\r\n  height: 0;\r\n  left: 40px;\r\n  top: 30px;\r\n  border: 10px solid;\r\n  border-color: #cd5c5c transparent transparent transparent;\r\n}\r\n\r\n.ep-width200 {\r\n    width: 200px;\r\n}\r\n\r\n.ep-width150 {\r\n    width: 150px;\r\n}\r\n\r\n.ep-width-streatch {\r\n    width: 100%;\r\n}\r\n\r\n.ep-event {\r\n    border: 2px solid #1e90ff;\r\n    border-radius: 2px;\r\n    margin: 10px;\r\n}\r\n", ""]);
 
 /***/ }
 /******/ ]);

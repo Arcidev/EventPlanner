@@ -4,10 +4,17 @@
 
 namespace EventPlanner.UI.Controllers.Web
 {
+    [Route("/[action]")]
     public class HomeController : Controller
     {
-        // GET: /Home/Index
+        [Route("/")]
         public IActionResult Index()
+        {
+            return View();
+        }
+
+
+        public IActionResult Dashboard()
         {
             return View();
         }
