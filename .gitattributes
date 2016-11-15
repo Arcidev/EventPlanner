@@ -1,2 +1,2 @@
 # Ignore external libraries from statistics
-src\EventPlanner.UI\wwwroot\bundle.js linguist-vendored
+src/EventPlanner.UI/wwwroot/bundle.js linguist-vendored
