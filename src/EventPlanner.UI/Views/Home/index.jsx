@@ -6,6 +6,7 @@ import GoogleMap from 'google-map-react';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import '../../Styles/site.css';
+import './eventEdit.jsx';
 
 const baseUrl = 'http://localhost:13692/';
 
@@ -80,22 +81,9 @@ class EventDashboardLayout extends React.Component {
     }
 }
 
-class EventEditLayout extends React.Component {
-    render() {
-        return (
-            <div>
-            <h1>test event edit layout render return</h1>
-            hello lorem ipsum
-            testing
-            </div>
-        );
-    }
-}
 
-const eventEdit = document.getElementById('event-edit');
-if (eventEdit) {
-    ReactDOM.render(<EventEditLayout />, eventEdit);
-}
+
+
 const eventDetail = document.getElementById('event-detail');
 if (eventDetail) {
     ReactDOM.render(<EventDetailLayout />, eventDetail);
