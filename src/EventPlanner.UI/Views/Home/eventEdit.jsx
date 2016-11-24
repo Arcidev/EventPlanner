@@ -10,10 +10,25 @@ import '../../Styles/site.css';
 class EventEditLayout extends React.Component {
     render() {
         return (
-            <div>
-            <h1>test event edit layout render</h1>
-        hello lorem ipsum testing
-        </div>
+            <form class="form-horizontal">
+            <div class="form-group">
+                <label for="eventName" class="col-sm-2 control-label">Name</label>
+                <div class="col-sm-10">
+                <input type="text" id="eventName" class="form-control" placeholder="Event name" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="eventDesc" class="col-sm-2 control-label">Description</label>
+                <div class="col-sm-10">
+                <textarea id="eventDesc" class="form-control" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">Save event</button>
+                </div>
+            </div>
+            </form>
         );
     }
 }
