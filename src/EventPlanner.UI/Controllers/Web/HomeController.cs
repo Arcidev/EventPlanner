@@ -13,8 +13,14 @@ namespace EventPlanner.UI.Controllers.Web
             return View();
         }
 
-
+        [Route("/Dashboard")]
         public IActionResult Dashboard()
+        {
+            return View();
+        }
+
+        [Route("/Event/Edit")]
+        public IActionResult EventEdit()
         {
             return View();
         }

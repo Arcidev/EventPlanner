@@ -1,5 +1,7 @@
 ﻿"use strict";
 
+var webpack = require('webpack');
+
 module.exports = {
     entry: "./Views/Home/index.jsx",
     output: {
@@ -20,10 +22,10 @@ module.exports = {
             { test: /\.js$/, exclude: /node_modules/, loaders: ['react-hot', 'babel?stage=0&optional=runtime&plugins=typecheck'] }
         ],
         resolve: {
-            extensions: ['', '.js', '.css']
-        },
-        modulesDirectories: [
-          'node_modules'
-        ]
+            extensions: ['', '.js', '.css', '.jsx'],
+            modulesDirectories: [
+                'node_modules'
+            ]
+        }
     }
 };
