@@ -23,6 +23,45 @@ namespace EventPlanner.BL.Facades
             this.userRepository = userRepository;
         }
 
+        public async Task<IList<PlaceDTO>> GetEventPlaces(string eventId)
+        {
+            var outputEvent = await eventRepository.GetAsync(ObjectId.Parse(eventId));
+            if (outputEvent == null)
+                throw new ArgumentException("User does not exist");
+
+            return Mapper.Map<IList<PlaceDTO>>(outputEvent.Places);
+        }
+        public async Task<IDictionary<string,IList<Tuple<string,bool>>>> GetEventUsersTimes(string eventId, PlaceDTO place)
+        {
+
+            var users = await GetUsersForEvent(eventId);
+            ObjectId eventObjectId = ObjectId.Parse(eventId);
+            var outputEvent = await eventRepository.GetAsync(eventObjectId);
+
+            var choices = new List<Tuple<string, bool>>();
+            var output = new Dictionary<string, IList<Tuple<string, bool>>>();
+            IList<DateTime> eventTimes = outputEvent.Times;
+            
+            foreach (UserDTO user in users)
+            {
+                var times = user.UserEvents[eventObjectId].Choices[place];
+                foreach (DateTime time in outputEvent.Times)
+                {
+                    var attend = false;
+                    if (times.Contains(time)) {
+                        attend = true; 
+                        
+                    }
+                    choices.Add(Tuple.Create(time.ToString(), attend));
+                }
+                choices.OrderBy((x) => DateTime.Parse(x.Item1));
+                output.Add( user.Email, choices);
+            }
+
+            return output;
+        }
+
+
         public async Task<IEnumerable<EventDTO>> GetUserEvents(string userId)
         {
             var user = await GetUser(userId);
