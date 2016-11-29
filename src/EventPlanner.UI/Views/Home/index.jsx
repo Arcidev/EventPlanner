@@ -6,6 +6,7 @@ import GoogleMap from 'google-map-react';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import '../../Styles/site.css';
+import './eventEdit.jsx';
 
 const baseUrl = 'http://localhost:13692/';
 
@@ -80,11 +81,8 @@ class EventDashboardLayout extends React.Component {
     }
 }
 
-class EventEditLayout extends React.Component {
-    render() {
-        
-    }
-}
+
+
 
 const eventDetail = document.getElementById('event-detail');
 if (eventDetail) {

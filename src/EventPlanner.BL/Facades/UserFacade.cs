@@ -3,6 +3,7 @@ using EventPlanner.BL.DTO;
 using EventPlanner.BL.Facades.Interfaces;
 using EventPlanner.DAL.DataAccess.Interfaces;
 using EventPlanner.DAL.Entities;
+using System;
 using System.Threading.Tasks;
 
 namespace EventPlanner.BL.Facades
@@ -24,7 +25,6 @@ namespace EventPlanner.BL.Facades
                 user = new User() { Email = email };
                 await userRepository.AddAsync(user);
             }
-
             return Mapper.Map<UserDTO>(user);
         }
     }
