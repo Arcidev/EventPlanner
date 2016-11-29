@@ -16,46 +16,46 @@ class EventEditLayout extends React.Component {
             <div>
             <h2>Basic information</h2>
                 <div>
-                <form class="form-horizontal">
-                <div class="form-group">
-                    <label for="eventName" class="col-sm-2 control-label">Name</label>
-                    <div class="col-sm-10">
-                    <input type="text" id="eventName" class="form-control" placeholder="Event name" />
+                <form className="form-horizontal">
+                <div className="form-group">
+                    <label htmlFor="eventName" className="col-sm-2 control-label">Name</label>
+                    <div className="col-sm-10">
+                    <input type="text" id="eventName" className="form-control" placeholder="Event name" />
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="eventDesc" class="col-sm-2 control-label">Description</label>
-                    <div class="col-sm-10">
-                    <textarea id="eventDesc" class="form-control" rows="3"></textarea>
+                <div className="form-group">
+                    <label htmlFor="eventDesc" className="col-sm-2 control-label">Description</label>
+                    <div className="col-sm-10">
+                    <textarea id="eventDesc" className="form-control" rows="3"></textarea>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                    <button type="submit" class="btn btn-default">Save event</button>
+                <div className="form-group">
+                    <div className="col-sm-offset-2 col-sm-10">
+                    <button type="submit" className="btn btn-default">Save event</button>
                     </div>
                 </div>
                 </form>
                 </div>
             <h2>People</h2>
                 <div>
-                <form class="form-horizontal">
-                    <button type="button" class="btn btn-default">Add people</button>
-                    <div class="form-group">
-                        <label for="personEmail0" class="col-sm-2 control-label">Person's email</label>
-                        <div class="col-sm-10">
-                        <input type="email" id="personEmail0" class="form-control" placeholder="john.smith@example.com" />
+                <form className="form-horizontal">
+                    <button type="button" className="btn btn-default">Add people</button>
+                    <div className="form-group">
+                        <label htmlFor="personEmail0" className="col-sm-2 control-label">Person's email</label>
+                        <div className="col-sm-10">
+                        <input type="email" id="personEmail0" className="form-control" placeholder="john.smith@example.com" />
                         </div>
                     </div>
                 </form>
                 </div>
             <h2>Date and Time</h2>
                 <div>
-                <form class="form-horizontal">
-                    <button type="button" class="btn btn-default">Add date</button>
-                    <div class="form-group">
-                        <label for="eventDate0" class="col-sm-2 control-label">Datetime</label>
-                        <div class="col-sm-10">
-                        <input type="datetime-local" id="eventDate0" class="form-control" />
+                <form className="form-horizontal">
+                    <button type="button" className="btn btn-default">Add date</button>
+                    <div className="form-group">
+                        <label htmlFor="eventDate0" className="col-sm-2 control-label">Datetime</label>
+                        <div className="col-sm-10">
+                        <input type="datetime-local" id="eventDate0" className="form-control" />
                         </div>
                     </div>
                 </form>
@@ -69,12 +69,12 @@ class EventEditLayout extends React.Component {
                         <div className="ep-marker">place A</div>
                     </GoogleMap>
                 </div>
-                <form class="form-horizontal">
-                    <button type="button" class="btn btn-default">Add place</button>
-                    <div class="form-group">
-                        <label for="eventPlace0" class="col-sm-2 control-label">Place</label>
-                        <div class="col-sm-10">
-                        <input type="text" id="eventPlace0" class="form-control" />
+                <form className="form-horizontal">
+                    <button type="button" className="btn btn-default">Add place</button>
+                    <div className="form-group">
+                        <label htmlFor="eventPlace0" className="col-sm-2 control-label">Place</label>
+                        <div className="col-sm-10">
+                        <input type="text" id="eventPlace0" className="form-control" />
                         </div>
                     </div>
                 </form>
