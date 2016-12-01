@@ -14,9 +14,11 @@ class EventEditLayout extends React.Component {
 
         let styles = {
                 panel: {
-                border: "solid grey",
-                borderWidth: "1 5px",
-                borderRadius: "8px"
+                border: "solid #f1f1f1",
+                borderWidth: "1 1px",
+                borderRadius: "8px",
+
+                padding: "15px"
                 }
         }
 
@@ -46,7 +48,7 @@ class EventEditLayout extends React.Component {
                 </form>
                 </div>
             <h2>People</h2>
-                <div>
+                <div style={styles.panel} >
                 <form className="form-horizontal">
                     <button type="button" className="btn btn-default">Add people</button>
                     <div className="form-group">
@@ -58,7 +60,7 @@ class EventEditLayout extends React.Component {
                 </form>
                 </div>
             <h2>Date and Time</h2>
-                <div>
+                <div style={styles.panel} >
                 <form className="form-horizontal">
                     <button type="button" className="btn btn-default">Add date</button>
                     <div className="form-group">
@@ -70,7 +72,7 @@ class EventEditLayout extends React.Component {
                 </form>
                 </div>
             <h2>Place</h2>
-                <div>
+                <div style={styles.panel} >
                 <div className="thumbnail ep-map">
                     <GoogleMap defaultCenter={center}
                                 apiKey={""}//get the key at https://developers.google.com/maps/documentation/javascript/get-api-key
