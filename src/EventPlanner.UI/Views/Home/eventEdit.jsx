@@ -12,10 +12,19 @@ class EventEditLayout extends React.Component {
         var center = { lat: 59.938043, lng: 30.337157 };
         var zoom = 9;
 
+        let styles = {
+                panel: {
+                border: "solid grey",
+                borderWidth: "1 5px",
+                borderRadius: "8px"
+                }
+        }
+
         return (
             <div>
+
             <h2>Basic information</h2>
-                <div>
+                <div style={styles.panel} >
                 <form className="form-horizontal">
                 <div className="form-group">
                     <label htmlFor="eventName" className="col-sm-2 control-label">Name</label>
