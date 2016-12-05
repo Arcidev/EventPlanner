@@ -92,7 +92,25 @@ class PeopleBlock extends React.Component {
             <form className="form-horizontal">
                 <button type="button" className="btn btn-default">Add people</button>
                 <PeopleRows/>
-            </form>)
+            </form>
+        );
+    }
+}
+
+class DateTimeBlock extends React.Component{
+    render(){
+        var row = "12/27/2016";
+        return(
+                <form className="form-horizontal">
+                    <button type="button" className="btn btn-default">Add date</button>
+                    <div className="form-group">
+                        <label htmlFor="eventDate0" className="col-sm-2 control-label">Datetime</label>
+                        <div className="col-sm-10">
+                        <input type="datetime-local" id="eventDate0" className="form-control" value={row}/>
+                        </div>
+                    </div>
+                </form>
+        );
     }
 }
 
@@ -124,15 +142,7 @@ class EventEditLayout extends React.Component {
                 </div>
             <h2>Date and Time</h2>
                 <div style={styles.panel} >
-                <form className="form-horizontal">
-                    <button type="button" className="btn btn-default">Add date</button>
-                    <div className="form-group">
-                        <label htmlFor="eventDate0" className="col-sm-2 control-label">Datetime</label>
-                        <div className="col-sm-10">
-                        <input type="datetime-local" id="eventDate0" className="form-control" />
-                        </div>
-                    </div>
-                </form>
+                <DateTimeBlock/>
                 </div>
             <h2>Place</h2>
                 <div style={styles.panel} >
