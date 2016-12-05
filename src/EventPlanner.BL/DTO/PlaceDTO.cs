@@ -15,8 +15,6 @@ namespace EventPlanner.BL.DTO
             {
                 return false;
             }
-            
-
             return fooItem.X == this.X && fooItem.Y == this.Y;
         }
 
