@@ -24,6 +24,7 @@ var eventData = {
     places: [{ lat: 59.938043, lng: 30.337157 }, { lat: 59.938, lng: 30.33 }]
 }
 
+
 class PeopleRows extends React.Component {
     render() {
         var rows = [];
@@ -55,6 +56,16 @@ class PeopleRows extends React.Component {
             {rows}
         </div>
         );
+    }
+}
+
+class PeopleBlock extends React.Component {
+    render(){
+        return(
+            <form className="form-horizontal">
+                <button type="button" className="btn btn-default">Add people</button>
+                <PeopleRows/>
+            </form>)
     }
 }
 
@@ -100,10 +111,7 @@ class EventEditLayout extends React.Component {
                 </div>
             <h2>People</h2>
                 <div style={styles.panel} >
-                <form className="form-horizontal">
-                    <button type="button" className="btn btn-default">Add people</button>
-                    <PeopleRows/>
-                </form>
+                <PeopleBlock/>
                 </div>
             <h2>Date and Time</h2>
                 <div style={styles.panel} >
