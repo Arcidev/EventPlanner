@@ -11,16 +11,7 @@ var eventData = {
     name : "Pavlova oslava narozek",
     desc : "Po roce se zase shledame, dame neco dobryho k jidlu a piti a poprejeme Pavlovi k jeho 25. narozkam.",
     people : ["john.smith77@gmail.com", "teri899@yahoo.com"],
-    dates: [
-        {
-            value: "2. 3. 2016",
-            hours: ["8:00","9:00", "10:00"]
-        },
-        {
-            value: "2. 4. 2019",
-            hours: ["10:00", "11:00"]
-        }
-    ],
+    dates: ["2016-12-30T20:40:00", "2016-12-30T21:40:00", "2016-12-31T17:00:00"],
     places: [{ lat: 59.938043, lng: 30.337157 }, { lat: 59.938, lng: 30.33 }]
 }
 
@@ -99,7 +90,22 @@ class PeopleBlock extends React.Component {
 
 class DateTimeBlock extends React.Component{
     render(){
-        var row = "2016-12-30T20:40:00";
+        //var row = "2016-12-30T20:40:00";
+        var rows = [];
+        var count = 1;
+        eventData.dates.forEach(function(date){
+            var rowId = "eventDate" + count;
+            rows.push
+            (
+                <div className="form-group">
+                    <label htmlFor={rowId} className="col-sm-2 control-label">Datetime</label>
+                    <div className="col-sm-10">
+                    <input type="datetime-local" id={rowId} className="form-control" defaultValue={date}/>
+                    </div>
+                </div>
+            );
+            count++;
+        })
 
         return(
                 <form className="form-horizontal">
@@ -107,9 +113,10 @@ class DateTimeBlock extends React.Component{
                     <div className="form-group">
                         <label htmlFor="eventDate0" className="col-sm-2 control-label">Datetime</label>
                         <div className="col-sm-10">
-                        <input type="datetime-local" id="eventDate0" className="form-control" defaultValue={row}/>
+                        <input type="datetime-local" id="eventDate0" className="form-control"/>
                         </div>
                     </div>
+                    {rows}
                 </form>
         );
     }
