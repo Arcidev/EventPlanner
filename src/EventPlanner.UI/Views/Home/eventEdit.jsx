@@ -99,8 +99,8 @@ class PeopleBlock extends React.Component {
 
 class DateTimeBlock extends React.Component{
     render(){
-        //var row = new Date("2016-12-30T20:40:00Z").toISOString();
-        var row = new Date("2016-12-30 20:40:00").toISOString();
+        var row = "2016-12-30T20:40:00";
+
         return(
                 <form className="form-horizontal">
                     <button type="button" className="btn btn-default">Add date</button>
