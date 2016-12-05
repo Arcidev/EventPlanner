@@ -27,17 +27,30 @@ var eventData = {
 class PeopleRows extends React.Component {
     render() {
         var rows = [];
+        var count = 0;
         eventData.people.forEach(function (row)
         {
-            rows.push(<h3>{row}</h3>);
+            var rowId = "personEmail" + count;
+            rows.push
+            (
+                    <div className="form-group">
+                        <label htmlFor={rowId} className="col-sm-2 control-label">Person's email</label>
+                        <div className="col-sm-10">
+                            <input type="email" id={rowId} className="form-control" value={row} />
+                        </div>
+                    </div>
+            );
+            count++;
         });
 
      
         return (
-        <div className="form-group">
-            <label htmlFor="personEmail0" className="col-sm-2 control-label">Person's email</label>
-            <div className="col-sm-10">
-            <input type="email" id="personEmail0" className="form-control" placeholder="john.smith@example.com" />
+        <div>
+            <div className="form-group">
+                <label htmlFor="personEmail0" className="col-sm-2 control-label">Person's email</label>
+                <div className="col-sm-10">
+                <input type="email" id="personEmail0" className="form-control" placeholder="john.smith@example.com" />
+                </div>
             </div>
             {rows}
         </div>
