@@ -32,13 +32,13 @@ class BasicInfoBlock extends React.Component {
                     <div className="form-group">
                         <label htmlFor="eventName" className="col-sm-2 control-label">Name</label>
                         <div className="col-sm-10">
-                        <input type="text" id="eventName" className="form-control" placeholder="Event name" value={eventData.name}/>
+                        <input type="text" id="eventName" className="form-control" placeholder="Event name" defaultValue={eventData.name}/>
                         </div>
                     </div>
                     <div className="form-group">
                         <label htmlFor="eventDesc" className="col-sm-2 control-label">Description</label>
                         <div className="col-sm-10">
-                        <textarea id="eventDesc" className="form-control" rows="3">{eventData.desc}</textarea>
+                        <textarea id="eventDesc" className="form-control" rows="3" defaultValue={eventData.desc}></textarea>
                         </div>
                     </div>
                     <div className="form-group">
@@ -55,7 +55,7 @@ class BasicInfoBlock extends React.Component {
 class PeopleRows extends React.Component {
     render() {
         var rows = [];
-        var count = 0;
+        var count = 1;
         eventData.people.forEach(function (row)
         {
             var rowId = "personEmail" + count;
@@ -99,14 +99,15 @@ class PeopleBlock extends React.Component {
 
 class DateTimeBlock extends React.Component{
     render(){
-        var row = "12/27/2016";
+        //var row = new Date("2016-12-30T20:40:00Z").toISOString();
+        var row = new Date("2016-12-30 20:40:00").toISOString();
         return(
                 <form className="form-horizontal">
                     <button type="button" className="btn btn-default">Add date</button>
                     <div className="form-group">
                         <label htmlFor="eventDate0" className="col-sm-2 control-label">Datetime</label>
                         <div className="col-sm-10">
-                        <input type="datetime-local" id="eventDate0" className="form-control" value={row}/>
+                        <input type="datetime-local" id="eventDate0" className="form-control" defaultValue={row}/>
                         </div>
                     </div>
                 </form>
