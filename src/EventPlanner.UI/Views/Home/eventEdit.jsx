@@ -25,6 +25,33 @@ var eventData = {
 }
 
 
+class BasicInfoBlock extends React.Component {
+    render(){
+        return(
+                <form className="form-horizontal">
+                    <div className="form-group">
+                        <label htmlFor="eventName" className="col-sm-2 control-label">Name</label>
+                        <div className="col-sm-10">
+                        <input type="text" id="eventName" className="form-control" placeholder="Event name" value={eventData.name}/>
+                        </div>
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="eventDesc" className="col-sm-2 control-label">Description</label>
+                        <div className="col-sm-10">
+                        <textarea id="eventDesc" className="form-control" rows="3">{eventData.desc}</textarea>
+                        </div>
+                    </div>
+                    <div className="form-group">
+                        <div className="col-sm-offset-2 col-sm-10">
+                        <button type="submit" className="btn btn-default">Save event</button>
+                        </div>
+                    </div>
+                </form>
+            );
+    }
+}
+
+
 class PeopleRows extends React.Component {
     render() {
         var rows = [];
@@ -89,25 +116,7 @@ class EventEditLayout extends React.Component {
 
             <h2>Basic information</h2>
                 <div style={styles.panel} >
-                <form className="form-horizontal">
-                <div className="form-group">
-                    <label htmlFor="eventName" className="col-sm-2 control-label">Name</label>
-                    <div className="col-sm-10">
-                    <input type="text" id="eventName" className="form-control" placeholder="Event name" value={eventData.name}/>
-                    </div>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="eventDesc" className="col-sm-2 control-label">Description</label>
-                    <div className="col-sm-10">
-                    <textarea id="eventDesc" className="form-control" rows="3">{eventData.desc}</textarea>
-                    </div>
-                </div>
-                <div className="form-group">
-                    <div className="col-sm-offset-2 col-sm-10">
-                    <button type="submit" className="btn btn-default">Save event</button>
-                    </div>
-                </div>
-                </form>
+                <BasicInfoBlock/>
                 </div>
             <h2>People</h2>
                 <div style={styles.panel} >
