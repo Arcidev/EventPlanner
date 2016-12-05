@@ -7,6 +7,44 @@ import GoogleMap from 'google-map-react';
 import 'bootstrap/dist/css/bootstrap.css';
 import '../../Styles/site.css';
 
+var eventData = {
+    name : "Pavlova oslava narozek",
+    desc : "Po roce se zase shledame, dame neco dobryho k jidlu a piti a poprejeme Pavlovi k jeho 25. narozkam.",
+    people : ["john.smith77@gmail.com", "teri899@yahoo.com"],
+    dates: [
+        {
+            value: "2. 3. 2016",
+            hours: ["8:00","9:00", "10:00"]
+        },
+        {
+            value: "2. 4. 2019",
+            hours: ["10:00", "11:00"]
+        }
+    ],
+    places: [{ lat: 59.938043, lng: 30.337157 }, { lat: 59.938, lng: 30.33 }]
+}
+
+class PeopleRows extends React.Component {
+    render() {
+        var rows = [];
+        eventData.people.forEach(function (row)
+        {
+            rows.push(<h3>{row}</h3>);
+        });
+
+     
+        return (
+        <div className="form-group">
+            <label htmlFor="personEmail0" className="col-sm-2 control-label">Person's email</label>
+            <div className="col-sm-10">
+            <input type="email" id="personEmail0" className="form-control" placeholder="john.smith@example.com" />
+            </div>
+            {rows}
+        </div>
+        );
+    }
+}
+
 class EventEditLayout extends React.Component {
     render() {
         var center = { lat: 59.938043, lng: 30.337157 };
@@ -31,13 +69,13 @@ class EventEditLayout extends React.Component {
                 <div className="form-group">
                     <label htmlFor="eventName" className="col-sm-2 control-label">Name</label>
                     <div className="col-sm-10">
-                    <input type="text" id="eventName" className="form-control" placeholder="Event name" />
+                    <input type="text" id="eventName" className="form-control" placeholder="Event name" value={eventData.name}/>
                     </div>
                 </div>
                 <div className="form-group">
                     <label htmlFor="eventDesc" className="col-sm-2 control-label">Description</label>
                     <div className="col-sm-10">
-                    <textarea id="eventDesc" className="form-control" rows="3"></textarea>
+                    <textarea id="eventDesc" className="form-control" rows="3">{eventData.desc}</textarea>
                     </div>
                 </div>
                 <div className="form-group">
@@ -51,12 +89,7 @@ class EventEditLayout extends React.Component {
                 <div style={styles.panel} >
                 <form className="form-horizontal">
                     <button type="button" className="btn btn-default">Add people</button>
-                    <div className="form-group">
-                        <label htmlFor="personEmail0" className="col-sm-2 control-label">Person's email</label>
-                        <div className="col-sm-10">
-                        <input type="email" id="personEmail0" className="form-control" placeholder="john.smith@example.com" />
-                        </div>
-                    </div>
+                    <PeopleRows/>
                 </form>
                 </div>
             <h2>Date and Time</h2>
