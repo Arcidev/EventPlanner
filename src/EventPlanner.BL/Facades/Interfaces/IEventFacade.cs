@@ -1,6 +1,4 @@
 ﻿using EventPlanner.BL.DTO;
-using EventPlanner.DAL.Entities;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
