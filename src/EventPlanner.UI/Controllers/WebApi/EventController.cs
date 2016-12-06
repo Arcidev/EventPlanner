@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EventPlanner.UI.Controllers.WebApi
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/{eventId}")]
     public class EventController : Controller
     {
         private IEventFacade EventFacade { get; set; }
@@ -21,7 +21,7 @@ namespace EventPlanner.UI.Controllers.WebApi
 
         // GET: api/event/{eventId}/users
         [HttpGet]
-        [Route("{eventId}/users")]
+        [Route("users")]
         public async Task<IEnumerable<UserDTO>> GetUsers(string eventId)
         {
             return await EventFacade.GetUsersForEvent(eventId);
@@ -29,7 +29,7 @@ namespace EventPlanner.UI.Controllers.WebApi
 
         // GET: api/event/{eventId}/places
         [HttpGet]
-        [Route("{eventId}/places")]
+        [Route("places")]
         public async Task<IEnumerable<PlaceDTO>> GetPlaces(string eventId)
         {
             return await EventFacade.GetEventPlaces(eventId);
@@ -37,7 +37,7 @@ namespace EventPlanner.UI.Controllers.WebApi
 
         // GET: api/event/{eventId}/signUp
         [HttpPost]
-        [Route("{eventId}/signUp")]
+        [Route("signUp")]
         public async Task SignUpForEvent(string eventId, [FromBody] SignUpForEventModel signUpModel)
         {
             await EventFacade.SignUpForEvent(eventId, signUpModel.UserId, signUpModel.Choices);

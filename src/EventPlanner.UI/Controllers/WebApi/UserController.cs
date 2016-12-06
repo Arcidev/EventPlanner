@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EventPlanner.UI.Controllers.WebApi
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/{userId}")]
     public class UserController : Controller
     {
         private IEventFacade EventFacade { get; set; }
@@ -20,7 +20,7 @@ namespace EventPlanner.UI.Controllers.WebApi
 
         // GET: api/user/{userId}/events
         [HttpGet]
-        [Route("{userId}/events")]
+        [Route("events")]
         public async Task<IEnumerable<EventDTO>> GetEvents(string userId)
         {
             return await EventFacade.GetUserEvents(userId);
@@ -28,7 +28,7 @@ namespace EventPlanner.UI.Controllers.WebApi
 
         // POST: api/user/{userId}/createEvent
         [HttpPost]
-        [Route("{userId}/createEvent")]
+        [Route("createEvent")]
         public async Task<EventDTO> CreateEvent(string userId, [FromBody] EventDTO dto)
         {
             return await EventFacade.CreateEvent(dto, userId);
