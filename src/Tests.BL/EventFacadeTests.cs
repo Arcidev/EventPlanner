@@ -64,41 +64,42 @@ namespace Tests.BL
         [Fact]
         public async Task TestGetUserEventTimes()
         {
-            var user = await GetUser("test@mail.sk");
+            var creator = await GetUser("test@mail.sk");
+            var user = await GetUser("muj@mail.cz");
+
+            var dateTimeNow = DateTime.UtcNow;
+            var dateNow = DateTime.UtcNow.Date;
+            var place1 = new PlaceDTO() { X = 20, Y = 40 };
+            var place2 = new PlaceDTO() { X = 50, Y = 60 };
+
             var eventFacade = serviceProvider.GetRequiredService<IEventFacade>();
+            var e = new EventCreateDTO()
+            {
+                Times = new[] { dateTimeNow, dateNow },
+                Places = new[] { place1, place2 }
+            };
 
-            var date = DateTime.UtcNow.AddMinutes(20.0);
-            var place = new PlaceDTO() { X = 34, Y = 0 };
-            var e = await CreateEvent(user.Id, new List<PlaceDTO>() { place }, new List<DateTime>() { date });
-
-            var signUser = await GetUser("muj@mail.cz");
+            var createdEvent = await eventFacade.CreateEvent(e, creator.Id);
             var dict = new Dictionary<PlaceDTO, IList<DateTime>>()
             {
-                { place, new List<DateTime> {date } }
+                { place1, new List<DateTime> {dateNow } }
             };
-            var userEvent = new UserEventDTO() { Choices = dict };
+            var userEvent = new UserEventDTO() { Choices = dict};
 
-            await eventFacade.SignUpForEvent(e.Id, signUser.Id, userEvent);
+            await eventFacade.SignUpForEvent(createdEvent.Id, user.Id, userEvent);
 
-            e.Times.OrderBy((x) => x);
-            var userSignTimes = new Dictionary<string, IList<Tuple<string, bool>>>() { };
-            var list = new List<Tuple<string, bool>>() { };
-            foreach (var time in e.Times)
+            var output = await eventFacade.GetEventUsersTimes(createdEvent.Id, place1);
+            var expected = new Dictionary<string, IList<DateAttendDTO>>()
             {
-                if (time == date)
                 {
-                    list.Add(Tuple.Create(date.ToString(), true));
+                    user.Email, new List<DateAttendDTO>()
+                    {
+                        new DateAttendDTO() { DateString = dateNow.ToString(), IsUserAttending = true },
+                        new DateAttendDTO() { DateString = dateTimeNow.ToString(), IsUserAttending = false },
+                    }
                 }
-                else
-                {
-                    list.Add(Tuple.Create(time.ToString(), false));
-                }
-
-            }
-            userSignTimes.Add(signUser.Email, list);
-
-            var output = await eventFacade.GetEventUsersTimes(e.Id, place);
-            Assert.Equal(userSignTimes, output);
+            };
+            Assert.Equal(expected, output);
         }
 
         private async Task<UserDTO> GetUser(string mail)

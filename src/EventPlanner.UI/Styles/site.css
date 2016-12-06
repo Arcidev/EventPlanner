@@ -44,3 +44,15 @@
     border-radius: 2px;
     margin: 10px;
 }
+
+td.ep-yes {
+    background-color: lightgreen;
+}
+
+td.ep-no {
+    background-color: orangered;
+}
+
+td.ep-maybe {
+    background-color: cornsilk;
+}

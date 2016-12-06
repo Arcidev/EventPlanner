@@ -27,19 +27,19 @@ namespace EventPlanner.BL.Facades
         {
             var outputEvent = await eventRepository.GetAsync(ObjectId.Parse(eventId));
             if (outputEvent == null)
-                throw new ArgumentException("User does not exist");
+                throw new ArgumentException("Event does not exist");
 
             return Mapper.Map<IList<PlaceDTO>>(outputEvent.Places);
         }
-        public async Task<IDictionary<string,IList<Tuple<string,bool>>>> GetEventUsersTimes(string eventId, PlaceDTO place)
-        {
 
+        public async Task<IDictionary<string,IList<DateAttendDTO>>> GetEventUsersTimes(string eventId, PlaceDTO place)
+        {
             var users = await GetUsersForEvent(eventId);
             ObjectId eventObjectId = ObjectId.Parse(eventId);
             var outputEvent = await eventRepository.GetAsync(eventObjectId);
 
-            var choices = new List<Tuple<string, bool>>();
-            var output = new Dictionary<string, IList<Tuple<string, bool>>>();
+            var choices = new List<DateAttendDTO>();
+            var output = new Dictionary<string, IList<DateAttendDTO>>();
             IList<DateTime> eventTimes = outputEvent.Times;
             
             foreach (UserDTO user in users)
@@ -52,12 +52,11 @@ namespace EventPlanner.BL.Facades
                         attend = true; 
                         
                     }
-                    choices.Add(Tuple.Create(time.ToString(), attend));
+                    choices.Add(new DateAttendDTO() { DateString = time.ToString(), IsUserAttending = attend });
                 }
-                choices.OrderBy((x) => DateTime.Parse(x.Item1));
+                choices = choices.OrderBy((x) => DateTime.Parse(x.DateString)).ToList();
                 output.Add( user.Email, choices);
             }
-
             return output;
         }
 

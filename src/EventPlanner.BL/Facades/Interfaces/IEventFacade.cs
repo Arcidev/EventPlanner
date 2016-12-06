@@ -8,7 +8,7 @@ namespace EventPlanner.BL.Facades.Interfaces
 {
     public interface IEventFacade
     {
-        Task<IDictionary<string, IList<Tuple<string, bool>>>> GetEventUsersTimes(string eventId, PlaceDTO place);
+        Task<IDictionary<string, IList<DateAttendDTO>>> GetEventUsersTimes(string eventId, PlaceDTO place);
 
         Task<IList<PlaceDTO>> GetEventPlaces(string eventId);
 
