@@ -2,7 +2,7 @@
 import ReactDOM from "react-dom";
 import axios from "axios";
 import Pusher from "pusher-js";
-import GoogleMap from 'google-map-react';
+import {GoogleMapLoader, GoogleMap, Marker} from "react-google-maps";
 
 import 'bootstrap/dist/css/bootstrap.css';
 import '../../Styles/site.css';
@@ -21,7 +21,13 @@ class UserRow extends React.Component {
             userChoice === 0 ? <span className="glyphicon glyphicon-remove-sign"></span> :
             <span className="glyphicon glyphicon-question-sign"></span>;
 
-            cells.push(<td>{choiceHtml}</td>);
+            var choiceCss =
+                userChoice === 1 ? "ep-yes" :
+                userChoice === 0 ? "ep-no" :
+                userChoice === 3 ? "ep-maybe" :
+                "";
+
+            cells.push(<td className={choiceCss}>{choiceHtml}</td>);
         });
 
         return (<tr>{cells}</tr>);
@@ -35,55 +41,132 @@ class TableHeader extends React.Component {
 
         this.props.header.dates.forEach(function(date) {
             dateCells.push(<th colSpan={date.hours.length}>{date.value}</th>);
-        date.hours.forEach(function(hour){
-            hourCells.push(<th>{hour}</th>);
+            date.hours.forEach(function(hour){
+                hourCells.push(<th>{hour}</th>);
+            });
         });
-    });
 
-    return (
-        <thead>
-        <tr><th></th>{dateCells}</tr>
-        <tr><th></th>{hourCells}</tr>
-        </thead>
-    );
+        return (
+    <thead>
+    <tr><th></th>{dateCells}</tr>
+    <tr><th></th>{hourCells}</tr>
+    </thead>
+);
     }
 }
 
 class UserEditRow extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = this.getBlancForm();
+    }
+
+    getBlancForm()
+    {
+        var arr = new Array(this.props.hourCount).fill(-1);
+        return {
+            editRow: {
+                userName: "",
+                hours: arr 
+            }
+        };
+    }
+
+    resetForm(){
+        this.setState(this.getBlancForm());
+    }
+
+    setHourState(index, value)
+    {
+        var newHours = this.state.editRow.hours.slice();
+        newHours[index] = value;
+        this.setState({editRow: {userName: this.state.editRow.userName, hours: newHours}});
+    }
+
+    handleNameChange(e)
+    {
+        this.setState({editRow: {userName: e.target.value, hours: this.state.editRow.hours}});
+    }
+
+    handleYes(index) {
+        this.setHourState(index,1)
+    }
+
+    handleMaybe(index){
+        this.setHourState(index,2)
+    }
+
+    handleNo(index){
+        this.setHourState(index,0)
+    }
+
     render() {
+        if(this.props.hourCount !== this.state.editRow.hours.length)
+        {
+            this.resetForm();
+        }
+
         var checkboxCells = [];
-        this.props.header.dates.forEach(function(date) {
-            date.hours.forEach(function(hour){
-                checkboxCells.push(<td><input type="checkbox" /></td>);
-            });
+
+        var _that = this;
+
+        this.state.editRow.hours.forEach(function(choice, index) {
+            
+            var choiceCss =
+                choice === 1 ? "ep-yes" :
+                choice === 0 ? "ep-no" :
+                choice === 3 ? "ep-maybe" :
+                "";
+
+            checkboxCells.push(
+                <td className={choiceCss}>
+                    <ul>
+                    <li><a href="#" onClick={_that.handleYes.bind(_that, index)}>Yes</a></li>
+                    <li><a href="#" onClick={_that.handleMaybe.bind(_that, index)}>Maybe</a></li>
+                    <li><a href="#" onClick={_that.handleNo.bind(_that, index)}>No</a></li>
+                    </ul>
+                </td>);
         });
-        
+
         return (
             <tr>
-            <td><input type="text" className="form-control ep-width200" /></td>
-            {checkboxCells}
+            <td><input onChange={this.handleNameChange.bind(this)} type="text" value={this.state.editRow.userName} className="form-control ep-width200" /></td>
+                {checkboxCells}
             </tr>
         );
     }
 }
 
 class EventTable extends React.Component {
+
+    getTableHourCount() {
+        var possibleChoices = [];
+        this.props.table.header.dates.forEach(function (date) {
+            date.hours.forEach(function (choice) {
+                possibleChoices.push(-1);
+            });
+        });
+
+        return possibleChoices.length;
+    }
+
     render() {
         var userRows = [];
         this.props.table.userRows.forEach(function (row)
         {
             userRows.push(<UserRow row={row} />);
         });
-        
+
         return (
-            <table className="table table-striped">
-                <TableHeader header={this.props.table.header}/>
-                <tbody>
-                    {userRows}
-                    <UserEditRow header={this.props.table.header} />
-                </tbody>
-            </table>
-        );
+        <table className="table table-striped">
+            <TableHeader header={this.props.table.header} />
+            <tbody>
+                {userRows}
+                <UserEditRow hourCount={this.getTableHourCount()} />
+            </tbody>
+        </table>
+    );
     }
 }
 
@@ -95,44 +178,127 @@ class GoogleMarker extends React.Component {
 
 
 class EventDetailLayout extends React.Component {
-    render() {
-        var table = {
-            userRows: [
+    constructor()
+    {
+        super();
+        this.state =
+            {
+                selectedPlaceId: 1,
+                markers: [
                 {
-                    userName: "Nick",
-                    choices: [1,0,2,1,2]
+                    title: "Toulouse",
+                    key: 1,
+                    position: {
+                        lat: 43.604363,
+                        lng: 1.443363,
+                    }
                 },
                 {
-                    userName: "Judy",
-                    choices: [1,1,1,2,2]
-                }
-            ],
-            header: {
-                dates: [
-                    {
-                        value: "2. 3. 2016",
-                        hours: ["8:00","9:00", "10:00"]
-                    },
-                    {
-                        value: "2. 4. 2019",
-                        hours: ["10:00", "11:00"]
+                    title: "Zero",
+                    key: 2,
+                    position: {
+                        lat: 0,
+                        lng: 0,
                     }
-                ]
-            }
+                }],
+                tables: [{
+                    key: 1,
+                    userRows: [
+                        {
+                            userName: "Nick",
+                            choices: [1,0,2,1,2]
+                        },
+                        {
+                            userName: "Judy",
+                            choices: [1,1,1,2,2]
+                        }
+                    ],
+                    header: {
+                        dates: [
+                            {
+                                value: "2. 3. 2016",
+                                hours: ["8:00","9:00", "10:00"]
+                            },
+                            {
+                                value: "2. 4. 2019",
+                                hours: ["10:00", "11:00"]
+                            }
+                        ]
+                    }
+                },
+                {
+                    key: 2,
+                    userRows: [
+                        {
+                            userName: "Tom",
+                            choices: [1,0,2,2]
+                        },
+                    ],
+                    header: {
+                        dates: [
+                            {
+                                value: "2. 5. 2016",
+                                hours: ["8:00","9:00"]
+                            },
+                            {
+                                value: "2. 4. 2019",
+                                hours: ["10:00", "11:00"]
+                            }
+                        ]
+                    }
+                }]
+            };
+    }
+
+    onMarkerRightclick(index) {
+        var marker = this.state.markers[index];
+        this.setState({selectedPlaceId: marker.key});
+    }
+
+    getSelectedMarker()
+    {
+        var candidates = this.state.markers.filter(m => m.key === this.state.selectedPlaceId);
+        if(candidates.length == 0){
+            console.log("No table was found by eventId: "+this.state.selectedPlaceId)
         }
+        return candidates[0];
+    }
 
+    getSelectedTable()
+    {
+        var candidates = this.state.tables.filter(m => m.key === this.state.selectedPlaceId);
+        if(candidates.length == 0){
+            console.log("No table was found by eventId: "+this.state.selectedPlaceId)
+        }
+        return candidates[0];
+    }
 
+    render() {
         var center = { lat: 59.938043, lng: 30.337157 };
         var zoom = 9;
         return (
             <div className="panel panel-primary">
                 <div className="thumbnail ep-map">
-                    <GoogleMap defaultCenter={center} defaultZoom={zoom}>
-                        <GoogleMarker placeName="place A"/>
-                    </GoogleMap>
+                    <GoogleMapLoader containerElement={
+                        <div
+                          style={{
+                        height: "100%",
+                    }}
+                        />
+}
+    googleMapElement={
+      <GoogleMap
+    defaultZoom={3}
+    defaultCenter={center}>
+    {this.state.markers.map((marker, index) => {
+        return (<Marker onClick={this.onMarkerRightclick.bind(this, index)} {...marker} />);
+    })}
+                        </GoogleMap>
+                        }
+                    />
                 </div>
-                <div className="panel-heading"><h4>Name of Selected Place</h4></div>
-                <EventTable table={table} />
+                <div className="panel-heading"><h4>{this.getSelectedMarker().title}</h4></div>
+                <EventTable table={this.getSelectedTable()} editRow={this.state.editRow} />
             </div>
         );
     }
@@ -154,7 +320,7 @@ class EventDashboardLayout extends React.Component {
                                     <button className="btn btn-default navbar-btn nav-pills"><span className="glyphicon glyphicon-copy"></span>Fill in</button>
                                 </div>
                             </div>
-                         </div>
+                        </div>
                     </div>
                 </div>
             </div>

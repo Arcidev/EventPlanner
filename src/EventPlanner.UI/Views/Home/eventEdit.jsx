@@ -75,7 +75,7 @@ class EventEditLayout extends React.Component {
                 <div style={styles.panel} >
                 <div className="thumbnail ep-map">
                     <GoogleMap defaultCenter={center}
-                                apiKey={""}//get the key at https://developers.google.com/maps/documentation/javascript/get-api-key
+                                apiKey={""}
                                 defaultZoom={zoom}>
                         <div className="ep-marker">place A</div>
                     </GoogleMap>
