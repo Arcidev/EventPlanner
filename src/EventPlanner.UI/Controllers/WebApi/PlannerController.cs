@@ -5,76 +5,23 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using EventPlanner.BL.DTO;
+using EventPlanner.WebApiModels;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations;
 
 namespace EventPlanner.UI.Controllers.WebApi
 {
-    public class EventPageVM
-    {
-        public int SelectedPlaceId { get; set; }
-        public MarkerVM[] Markers { get; set; }
-        public TableVM[] Tables { get; set; }
-    }
-
-    public class TableVM
-    {
-        public int Key { get; set; }
-        public HeaderVM Header { get; set; }
-        public UserRowVM[] UserRows { get; set; }
-
-    }
-
-    public class HeaderVM
-    {
-        public DateVM[] Dates { get; set; }
-    }
-
-    public class DateVM
-    {
-        public string Value { get; set; }
-        public string[] Hours { get; set; }
-    }
-
-    public class UserRowVM
-    {
-        public string UserName { get; set; }
-        public int[] Choices { get; set; }
-    }
-
-    public class MarkerVM
-    {
-        public string Title { get; set; }
-        public int Key { get; set; }
-        public PositionVM Position { get; set; }
-    }
-
-    public class PositionVM
-    {
-        public double Lat { get; set; }
-        public double Lng { get; set; }
-    }
-
-    public class UserEditRowVM
-    {
-        public string UserName { get; set; }
-
-        [Required]
-        public int[] Hours { get; set; } = new int[] { };
-    }
-
-    public class DashboardController : Controller
+    public class PlannerController : Controller
     {
         [HttpGet]
-        [Route("events/{eventId}/get")]
+        [Route("event/{eventId}/get")]
         public IActionResult GetEventData(string eventId)
         {
             //0 -no, 1-yes, 2-maybe
             var page = new EventPageVM
             {
                 SelectedPlaceId = 1,
-                Markers = new MarkerVM[] {
+                Markers = new[] {
                      new MarkerVM {
                     Title = "Toulouse",
                         Key = 1,
@@ -94,7 +41,7 @@ namespace EventPlanner.UI.Controllers.WebApi
                         }
                     }
                 },
-                Tables = new TableVM[] {
+                Tables = new[] {
                     new TableVM {
                         Key = 1,
                         UserRows = new UserRowVM [] {
@@ -109,7 +56,7 @@ namespace EventPlanner.UI.Controllers.WebApi
                         },
                         Header = new HeaderVM
                         {
-                            Dates = new DateVM [] {
+                            Dates = new[] {
                                 new DateVM {
                                     Value = "2. 3. 2016",
                                     Hours = new string [] { "8:00", "9:00", "10:00" }
@@ -123,7 +70,7 @@ namespace EventPlanner.UI.Controllers.WebApi
                     },
                     new TableVM {
                         Key = 2,
-                        UserRows = new UserRowVM [] {
+                        UserRows = new[] {
                             new UserRowVM {
                                 UserName = "Tom",
                                 Choices = new int [] { 1, 0, 1, 1}
@@ -152,7 +99,7 @@ namespace EventPlanner.UI.Controllers.WebApi
      
 
         [HttpPost]
-        [Route("events/{eventId}/save-choices")]
+        [Route("event/{eventId}/save-choices")]
         public void SaveUserChoices(string eventId, [FromBody]UserEditRowVM editRow)
         {
             //TODO save here

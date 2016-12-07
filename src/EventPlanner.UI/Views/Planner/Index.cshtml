@@ -1,0 +1,29 @@
+﻿@{
+    Layout = "~/Views/_Layout.cshtml";
+}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Event Planner</h1>
+        </div>
+        <div class="col-md-12">
+            <p>
+                Event planner is great tool for organizing stuff. Organise stuff! Get organized! Buzzwords everywhere.
+            </p>
+        </div>
+        <div class="col-md-6">
+            @Html.ActionLink("Create your event", "NewEvent", null, htmlAttributes: new { @class = "btn btn-lg btn-success" })
+        </div>
+        <div class="col-md-6">
+            @if (Context?.User?.Identity?.IsAuthenticated == false)
+            {
+                @Html.ActionLink("Login", "Login", "Account",  null, new { @class = "btn btn-lg btn-primary" });
+            }
+            else
+            {
+                @Html.ActionLink("My events", "Dashboard", null, htmlAttributes:  new { @class = "btn btn-lg btn-primary" });
+            }
+        </div>
+    </div>
+    </div>
+    <script src="/bundle.js"></script>

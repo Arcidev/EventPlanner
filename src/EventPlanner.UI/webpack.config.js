@@ -3,7 +3,7 @@
 var webpack = require('webpack');
 
 module.exports = {
-    entry: "./Views/Home/index.jsx",
+    entry: "./Views/Planner/eventDetail.jsx",
     output: {
         filename: "./wwwroot/bundle.js"
     },

@@ -8,7 +8,11 @@ import 'bootstrap/dist/css/bootstrap.css';
 import '../../Styles/site.css';
 import './eventEdit.jsx';
 
-const baseUrl = 'http://localhost:13692/';
+const getBaseUrl = function () {
+    var url = window.location.href;
+    if (url.substr(-1) !== '/') url += '/';
+    return url;
+}
 
 class UserRow extends React.Component {
     render() {
@@ -103,7 +107,7 @@ class UserEditRow extends React.Component {
 
     handleSave(){
         axios
-             .post(`events/1/save-choices`, this.state.editRow)
+             .post(getBaseUrl()+`save-choices`, this.state.editRow)
              .catch(() => alert('Something went wrong :( '));
     }
 
@@ -138,8 +142,12 @@ class UserEditRow extends React.Component {
         return (
             <tr>
             <td>
-                <input onChange={this.handleNameChange.bind(this)} type="text" value={this.state.editRow.userName} className="form-control ep-width150" />
-                <input type="button" value="Save" className="btn btn-sm btn-success" onClick={this.handleSave.bind(this)} />
+                <div className="input-group">
+                    <span className="input-group-btn">
+                        <input type="button" value="Save" className="btn btn-success" onClick={this.handleSave.bind(this)} />
+                    </span>
+                    <input onChange={this.handleNameChange.bind(this)} type="text" value={this.state.editRow.userName} className="form-control ep-width150" />
+                </div>
             </td>
                 {checkboxCells}
             </tr>
@@ -152,7 +160,7 @@ class EventTable extends React.Component {
     getTableHourCount() {
         var possibleChoices = [];
         this.props.table.header.dates.forEach(function (date) {
-            date.hours.forEach(function (choice) {
+            date.hours.forEach(function () {
                 possibleChoices.push(-1);
             });
         });
@@ -198,8 +206,9 @@ class EventDetailLayout extends React.Component {
     }
 
     componentDidMount() {
+        //makes post to /event/{eventId}/get handled by webapi therefore making use of event Id already present in the url
         axios
-            .get(`events/1/get`)
+            .get(getBaseUrl() + `get`)
             .then(response => {
                 this.setState(response.data);
             })
