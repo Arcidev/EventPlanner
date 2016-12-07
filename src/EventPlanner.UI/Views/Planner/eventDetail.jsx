@@ -9,9 +9,16 @@ import '../../Styles/site.css';
 import './eventEdit.jsx';
 
 const getBaseUrl = function () {
-    var url = window.location.href;
-    if (url.substr(-1) !== '/') url += '/';
+    var url = window.location.protocol + "//" + window.location.host + "/" + window.location.pathname+"/";
     return url;
+}
+
+const getCssClass = function (userChoice)
+{
+    return userChoice === 1 ? "ep-yes" :
+           userChoice === 0 ? "ep-no" :
+           userChoice === 2 ? "ep-may" :
+           "ep-blanc";
 }
 
 class UserRow extends React.Component {
@@ -25,13 +32,7 @@ class UserRow extends React.Component {
             userChoice === 0 ? <span className="glyphicon glyphicon-remove-sign"></span> :
             <span className="glyphicon glyphicon-question-sign"></span>;
 
-            var choiceCss =
-                userChoice === 1 ? "ep-yes" :
-                userChoice === 0 ? "ep-no" :
-                userChoice === 2 ? "ep-may" :
-                "ep-blanc";
-
-            cells.push(<td className={choiceCss}>{choiceHtml}</td>);
+            cells.push(<td className={getCssClass(userChoice)}>{choiceHtml}</td>);
         });
 
         return (<tr>{cells}</tr>);
@@ -123,14 +124,8 @@ class UserEditRow extends React.Component {
 
         this.state.editRow.hours.forEach(function(choice, index) {
             
-            var choiceCss =
-                choice === 1 ? "ep-yes" :
-                choice === 0 ? "ep-no" :
-                choice === 2 ? "ep-may" :
-                "ep-blanc";
-
             checkboxCells.push(
-                <td className={choiceCss}>
+                <td className={getCssClass(choice)}>
                     <ul>
                     <li><a href="#" onClick={_that.handleYes.bind(_that, index)}>Yes</a></li>
                     <li><a href="#" onClick={_that.handleMaybe.bind(_that, index)}>Maybe</a></li>
