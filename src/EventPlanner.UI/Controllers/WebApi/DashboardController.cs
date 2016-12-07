@@ -74,24 +74,7 @@ namespace EventPlanner.UI.Controllers.WebApi
             {
                 SelectedPlaceId = 1,
                 Markers = new MarkerVM[] {
-                    new MarkerVM {
-                    Title = "Toulouse",
-                        Key = 1,
-                        Position = new PositionVM
-                        {
-                            Lat = 43.604363,
-                            Lng = 1.443363,
-                        }
-                    },
-                    new MarkerVM {
-                    Title = "Zero",
-                        Key = 2,
-                        Position = new PositionVM
-                        {
-                            Lat = 0,
-                            Lng = 0,
-                        }
-                    }
+                    
                 },
                 Tables = new TableVM[] {
                     new TableVM {

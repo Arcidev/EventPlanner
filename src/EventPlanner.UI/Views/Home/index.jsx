@@ -197,7 +197,7 @@ class EventDetailLayout extends React.Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         axios
             .get(`events/1/get`)
             .then(response => {
@@ -208,6 +208,7 @@ class EventDetailLayout extends React.Component {
                 alert('Failed loading table. :( ');
                 console.error(e);
             });
+        this.setState({});
     }
 
     onMarkerRightclick(index) {
@@ -230,8 +231,17 @@ class EventDetailLayout extends React.Component {
         var candidates = this.state.tables.filter(m => m.key === this.state.selectedPlaceId);
         if(candidates.length == 0){
             console.log("No table was found by eventId: "+this.state.selectedPlaceId)
+            return  this.getEmptyTable();
         }
         return candidates[0];
+    }
+
+    getEmptyTable() {
+        return {
+            header: {dates: []},
+            userEditRow: { userName: "", hours: []},
+            userRows: []
+        }
     }
 
     render() {
