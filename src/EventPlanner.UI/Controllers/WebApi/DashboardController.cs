@@ -86,6 +86,7 @@ namespace EventPlanner.UI.Controllers.WebApi
                             },
                             new UserRowVM {
                                 UserName = "Judy",
+                                //0 -no, 1-yes, 2-maybe
                                 Choices = new int [] { 0, 0, 1, 1, 2 }
                             },
                         },

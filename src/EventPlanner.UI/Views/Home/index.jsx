@@ -24,8 +24,8 @@ class UserRow extends React.Component {
             var choiceCss =
                 userChoice === 1 ? "ep-yes" :
                 userChoice === 0 ? "ep-no" :
-                userChoice === 3 ? "ep-maybe" :
-                "";
+                userChoice === 2 ? "ep-may" :
+                "ep-blanc";
 
             cells.push(<td className={choiceCss}>{choiceHtml}</td>);
         });
@@ -122,8 +122,8 @@ class UserEditRow extends React.Component {
             var choiceCss =
                 choice === 1 ? "ep-yes" :
                 choice === 0 ? "ep-no" :
-                choice === 3 ? "ep-maybe" :
-                "";
+                choice === 2 ? "ep-may" :
+                "ep-blanc";
 
             checkboxCells.push(
                 <td className={choiceCss}>
@@ -168,7 +168,7 @@ class EventTable extends React.Component {
         });
 
         return (
-        <table className="table table-striped">
+        <table className="table table-striped ep-sheet">
             <TableHeader header={this.props.table.header} />
             <tbody>
                 {userRows}
