@@ -101,6 +101,12 @@ class UserEditRow extends React.Component {
         this.setHourState(index,0)
     }
 
+    handleSave(){
+        axios
+             .post(`events/1/save-choices`, this.state.editRow)
+             .catch(() => alert('Something went wrong :( '));
+    }
+
     render() {
         if(this.props.hourCount !== this.state.editRow.hours.length)
         {
@@ -131,7 +137,10 @@ class UserEditRow extends React.Component {
 
         return (
             <tr>
-            <td><input onChange={this.handleNameChange.bind(this)} type="text" value={this.state.editRow.userName} className="form-control ep-width200" /></td>
+            <td>
+                <input onChange={this.handleNameChange.bind(this)} type="text" value={this.state.editRow.userName} className="form-control ep-width150" />
+                <input type="button" value="Save" className="btn btn-sm btn-success" onClick={this.handleSave.bind(this)} />
+            </td>
                 {checkboxCells}
             </tr>
         );
@@ -181,73 +190,24 @@ class EventDetailLayout extends React.Component {
     constructor()
     {
         super();
-        this.state =
+        this.state ={
+            selectedPlaceId: 1,
+            markers: [],
+            tables: []
+        }
+    }
+
+    componentWillMount() {
+        axios
+            .get(`events/1/get`)
+            .then(response => {
+                this.setState(response.data);
+            })
+            .catch((e) => 
             {
-                selectedPlaceId: 1,
-                markers: [
-                {
-                    title: "Toulouse",
-                    key: 1,
-                    position: {
-                        lat: 43.604363,
-                        lng: 1.443363,
-                    }
-                },
-                {
-                    title: "Zero",
-                    key: 2,
-                    position: {
-                        lat: 0,
-                        lng: 0,
-                    }
-                }],
-                tables: [{
-                    key: 1,
-                    userRows: [
-                        {
-                            userName: "Nick",
-                            choices: [1,0,2,1,2]
-                        },
-                        {
-                            userName: "Judy",
-                            choices: [1,1,1,2,2]
-                        }
-                    ],
-                    header: {
-                        dates: [
-                            {
-                                value: "2. 3. 2016",
-                                hours: ["8:00","9:00", "10:00"]
-                            },
-                            {
-                                value: "2. 4. 2019",
-                                hours: ["10:00", "11:00"]
-                            }
-                        ]
-                    }
-                },
-                {
-                    key: 2,
-                    userRows: [
-                        {
-                            userName: "Tom",
-                            choices: [1,0,2,2]
-                        },
-                    ],
-                    header: {
-                        dates: [
-                            {
-                                value: "2. 5. 2016",
-                                hours: ["8:00","9:00"]
-                            },
-                            {
-                                value: "2. 4. 2019",
-                                hours: ["10:00", "11:00"]
-                            }
-                        ]
-                    }
-                }]
-            };
+                alert('Failed loading table. :( ');
+                console.error(e);
+            });
     }
 
     onMarkerRightclick(index) {
@@ -259,7 +219,8 @@ class EventDetailLayout extends React.Component {
     {
         var candidates = this.state.markers.filter(m => m.key === this.state.selectedPlaceId);
         if(candidates.length == 0){
-            console.log("No table was found by eventId: "+this.state.selectedPlaceId)
+            console.log("No marker was found by eventId: "+this.state.selectedPlaceId)
+            return {title: ""};
         }
         return candidates[0];
     }
