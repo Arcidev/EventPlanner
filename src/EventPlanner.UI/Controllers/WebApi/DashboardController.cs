@@ -70,11 +70,29 @@ namespace EventPlanner.UI.Controllers.WebApi
         [Route("events/{eventId}/get")]
         public IActionResult GetEventData(string eventId)
         {
+            //0 -no, 1-yes, 2-maybe
             var page = new EventPageVM
             {
                 SelectedPlaceId = 1,
                 Markers = new MarkerVM[] {
-                    
+                     new MarkerVM {
+                    Title = "Toulouse",
+                        Key = 1,
+                        Position = new PositionVM
+                        {
+                            Lat = 43.604363,
+                            Lng = 1.443363,
+                        }
+                    },
+                    new MarkerVM {
+                    Title = "Zero",
+                        Key = 2,
+                        Position = new PositionVM
+                        {
+                            Lat = 0,
+                            Lng = 0,
+                        }
+                    }
                 },
                 Tables = new TableVM[] {
                     new TableVM {
@@ -86,7 +104,6 @@ namespace EventPlanner.UI.Controllers.WebApi
                             },
                             new UserRowVM {
                                 UserName = "Judy",
-                                //0 -no, 1-yes, 2-maybe
                                 Choices = new int [] { 0, 0, 1, 1, 2 }
                             },
                         },
