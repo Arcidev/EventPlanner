@@ -21,6 +21,7 @@ namespace EventPlanner.UI
             services.AddMvc();
             services.ConfigureBLServices();
             services.AddTransient<IUserFacade, UserFacade>();
+            services.AddTransient<IEventFacade, EventFacade>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
