@@ -69,7 +69,8 @@ class UserEditRow extends React.Component {
         return {
             editRow: {
                 userName: "",
-                hours: arr 
+                hours: arr,
+                tableKey: this.props.tableKey
             }
         };
     }
@@ -82,24 +83,36 @@ class UserEditRow extends React.Component {
     {
         var newHours = this.state.editRow.hours.slice();
         newHours[index] = value;
-        this.setState({editRow: {userName: this.state.editRow.userName, hours: newHours}});
+        this.setState({
+            editRow: {
+                userName: this.state.editRow.userName,
+                hours: newHours,
+                tableKey: this.props.tableKey
+            }
+        });
     }
 
     handleNameChange(e)
     {
-        this.setState({editRow: {userName: e.target.value, hours: this.state.editRow.hours}});
+        this.setState({
+            editRow: {
+                userName: e.target.value,
+                hours: this.state.editRow.hours,
+                tableKey: this.props.tableKey
+            }
+        });
     }
 
     handleYes(index) {
-        this.setHourState(index,1)
+        this.setHourState(index, 1);
     }
 
-    handleMaybe(index){
-        this.setHourState(index,2)
+    handleMaybe(index) {
+        this.setHourState(index, 2);
     }
 
-    handleNo(index){
-        this.setHourState(index,0)
+    handleNo(index) {
+        this.setHourState(index, 0);
     }
 
     handleSave(){
@@ -171,7 +184,7 @@ class EventTable extends React.Component {
             <TableHeader header={this.props.table.header} />
             <tbody>
                 {userRows}
-                <UserEditRow hourCount={this.getTableHourCount()} />
+                <UserEditRow tableKey={this.props.table.key} hourCount={this.getTableHourCount()} />
             </tbody>
         </table>
     );
@@ -219,7 +232,7 @@ class EventDetailLayout extends React.Component {
     getSelectedMarker()
     {
         var candidates = this.state.markers.filter(m => m.key === this.state.selectedPlaceId);
-        if(candidates.length == 0){
+        if(candidates.length === 0){
             console.log("No marker was found by eventId: "+this.state.selectedPlaceId)
             return {title: ""};
         }
@@ -229,7 +242,7 @@ class EventDetailLayout extends React.Component {
     getSelectedTable()
     {
         var candidates = this.state.tables.filter(m => m.key === this.state.selectedPlaceId);
-        if(candidates.length == 0){
+        if(candidates.length === 0){
             console.log("No table was found by eventId: "+this.state.selectedPlaceId)
             return  this.getEmptyTable();
         }
