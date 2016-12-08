@@ -30,7 +30,8 @@ namespace EventPlanner.UI.Controllers.WebApi
             {
                 Name = "Pavlova Oslava Narozek",
                 Desc = "Po roce se zase shledame, dame neco dobryho k jidlu a piti a poprejeme Pavlovi k jeho 25. narozkam.",
-                People = new[] { "john.smith77@gmail.com", "teri899@yahoo.com" }
+                People = new[] { "john.smith77@gmail.com", "teri899@yahoo.com" },
+                Dates = new[] { "2016-12-30T20:40:00", "2016-12-30T21:40:00", "2016-12-31T17:00:00" }
             };
 
             return new ObjectResult(data);
