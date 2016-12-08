@@ -25,7 +25,6 @@ class BasicInfoBlock extends React.Component {
             name : "Event Name",
             desc : "Event Description"
         };
-        BasicInfoBlock.context = this;
     }
 
     componentDidMount() {
@@ -70,10 +69,33 @@ class BasicInfoBlock extends React.Component {
 
 
 class PeopleRows extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = { 
+            people : ["john.smith@myexample.com"],
+        };
+    }
+
+    componentDidMount() {
+        axios
+        .get(getBaseUrl()+`get`)
+        .then((response) => {
+            this.setState({
+                people: response.data.people
+            });
+        })
+        .catch((e) => 
+        {
+            console.error(e);
+        });
+    }
+
+
     render() {
         var rows = [];
         var count = 1;
-        eventData.people.forEach(function (row)
+        this.state.people.forEach(function (row)
         {
             var rowId = "personEmail" + count;
             rows.push
@@ -90,13 +112,14 @@ class PeopleRows extends React.Component {
 
      
         return (
-        <div>
+            
+        <div>/*
             <div className="form-group">
                 <label htmlFor="personEmail0" className="col-sm-2 control-label">Person's email</label>
                 <div className="col-sm-10">
                 <input type="email" id="personEmail0" className="form-control" placeholder="john.smith@example.com" />
                 </div>
-            </div>
+            </div>*/
             {rows}
         </div>
         );
@@ -158,7 +181,6 @@ class PlaceBlock extends React.Component{
             <div>
                 <div className="thumbnail ep-map">
                     <GoogleMap defaultCenter={center}
-                    //apiKey={"AIzaSyDZoDUjdXqqq2L-WSpUF-_AHBuHI2zFI88"}//get the key at https://developers.google.com/maps/documentation/javascript/get-api-key
                             defaultZoom={zoom}>
                         <div className="ep-marker">place A</div>
                     </GoogleMap>

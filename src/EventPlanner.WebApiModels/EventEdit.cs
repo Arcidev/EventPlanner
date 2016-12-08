@@ -9,5 +9,6 @@ namespace EventPlanner.WebApiModels
     {
         public string Name { get; set; }
         public string Desc { get; set; }
+        public string[] People { get; set; }
     }
 }
