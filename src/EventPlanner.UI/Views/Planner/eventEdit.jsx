@@ -107,17 +107,10 @@ class PeopleRows extends React.Component {
         });
 
      
-        return (
-            
-        <div>/*
-            <div className="form-group">
-                <label htmlFor="personEmail0" className="col-sm-2 control-label">Person's email</label>
-                <div className="col-sm-10">
-                <input type="email" id="personEmail0" className="form-control" placeholder="john.smith@example.com" />
-                </div>
-            </div>*/
-            {rows}
-        </div>
+        return (         
+            <div>
+                {rows}
+            </div>
         );
     }
 }
@@ -133,7 +126,7 @@ class PeopleBlock extends React.Component {
     }
 }
 
-class DateTimeBlock extends React.Component{
+class DateTimeRows extends React.Component{
     constructor(props) {
         super(props);
 
@@ -174,17 +167,20 @@ class DateTimeBlock extends React.Component{
         })
 
         return(
-                <form className="form-horizontal">
-                    <button type="button" className="btn btn-default">Add date</button>
-                    /*
-                    <div className="form-group">
-                        <label htmlFor="eventDate0" className="col-sm-2 control-label">Datetime</label>
-                        <div className="col-sm-10">
-                        <input type="datetime-local" id="eventDate0" className="form-control"/>
-                        </div>
-                    </div>*/
+                <div>
                     {rows}
-                </form>
+                </div>
+        );
+    }
+}
+
+class DateTimeBlock extends React.Component {
+    render(){
+        return(
+            <form className="form-horizontal">
+                <button type="button" className="btn btn-default">Add date</button>
+                <DateTimeRows/>
+            </form>
         );
     }
 }
