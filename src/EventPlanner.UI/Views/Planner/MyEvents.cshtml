@@ -1,4 +1,56 @@
 ﻿@{
     Layout = "~/Views/_Layout.cshtml";
 }
+
+@model EventPlanner.WebApiModels.MyEventsPage
+
 <script src="/bundle.js"></script>
+<div class="container">
+    <div class="row">
+        <div class="panel panel-primary">
+            <div class="panel-heading">My events - Created</div>
+            <div class="panel-body">          
+                @foreach (var e in Model.Created)
+                {
+                    <div class="row ep-event">
+                        <h4 class="col-md-3">@e.Name</h4>
+                        <div class="col-md-9">
+                            <div class="btn-group pull-right">
+                                @if (e.CanEdit)
+                                {
+                                    @Html.ActionLink("Edit event", "EventEdit", new {e.EventId}, new {@class = "btn btn-default navbar-btn nav-pills"})
+                                }
+                                <button class="btn btn-default navbar-btn nav-pills"><span class="glyphicon glyphicon-link"></span>Copy link</button>
+                                
+                                @Html.ActionLink("Fill in", "EventDetail", new {e.EventId}, new {@class = "btn btn-default navbar-btn nav-pills"})
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="panel panel-primary">
+            <div class="panel-heading">My events - Invited to</div>
+            <div class="panel-body">
+                @foreach (var e in Model.InvitedTo)
+                {
+                    <div class="row ep-event">
+                        <h4 class="col-md-3">@e.Name</h4>
+                        <div class="col-md-9">
+                            <div class="btn-group pull-right">
+                                @if (e.CanEdit)
+                                {
+                                    @Html.ActionLink("Edit event", "EventEdit", new {e.EventId}, new {@class = "btn btn-default navbar-btn nav-pills"})
+                                }
+                                <button class="btn btn-default navbar-btn nav-pills"><span class="glyphicon glyphicon-link"></span>Copy link</button>
+                                @Html.ActionLink("Fill in", "EventDetail", new {e.EventId}, new {@class = "btn btn-default navbar-btn nav-pills"})
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

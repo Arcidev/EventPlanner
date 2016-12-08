@@ -279,35 +279,7 @@ class EventDetailLayout extends React.Component {
     }
 }
 
-class EventDashboardLayout extends React.Component {
-    render() {
-        return (
-            <div className="row">
-                <div className="panel panel-primary">
-                    <div className="panel-heading">My events - Created</div>
-                    <div className="panel-body">
-                        <div className="row ep-event">
-                            <h4 className="col-md-3">Event Name</h4>
-                            <div className="col-md-9">
-                                <div className="btn-group pull-right">
-                                    <button className="btn btn-default navbar-btn nav-pills"><span className="glyphicon glyphicon-edit"></span>Edit event</button>
-                                    <button className="btn btn-default navbar-btn nav-pills"><span className="glyphicon glyphicon-link"></span>Copy link</button>
-                                    <button className="btn btn-default navbar-btn nav-pills"><span className="glyphicon glyphicon-copy"></span>Fill in</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            );
-    }
-}
-
 const eventDetail = document.getElementById('event-detail');
 if (eventDetail) {
     ReactDOM.render(<EventDetailLayout />, eventDetail);
-}
-const dashboard = document.getElementById('dashboard');
-if (dashboard) {
-    ReactDOM.render(<EventDashboardLayout />, dashboard);
 }
