@@ -14,6 +14,27 @@ namespace EventPlanner.UI.Controllers.WebApi
     public class PlannerController : Controller
     {
         [HttpGet]
+        [Route("event/{eventId}/edit/get")]
+        public IActionResult GetEventEditData(string eventId)
+        {
+            /*
+            var eventData = {
+            name : "Pavlova oslava narozek",
+            desc: "Po roce se zase shledame, dame neco dobryho k jidlu a piti a poprejeme Pavlovi k jeho 25. narozkam.",
+            people: ["john.smith77@gmail.com", "teri899@yahoo.com"],
+            dates: ["2016-12-30T20:40:00", "2016-12-30T21:40:00", "2016-12-31T17:00:00"],
+            places: [{ lat: 59.938043, lng: 30.337157 }, { lat: 59.938, lng: 30.33 }]
+            */
+
+            var data = new EventEdit
+            {
+                Name = "Pavlova Oslava Narozek"
+            };
+
+            return new ObjectResult(data);
+        }
+
+        [HttpGet]
         [Route("event/{eventId}/get")]
         public IActionResult GetEventData(string eventId)
         {

@@ -16,17 +16,34 @@ var eventData = {
     places: [{ lat: 59.938043, lng: 30.337157 }, { lat: 59.938, lng: 30.33 }]
 }
 
-console.log(getBaseUrl());
-
-
 class BasicInfoBlock extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = { name : "Event Name" };
+        BasicInfoBlock.context = this;
+    }
+
+    componentDidMount() {
+        axios
+        .get(getBaseUrl()+`get`)
+        .then((response) => {
+            this.setState({name: response.data.name});
+        })
+        .catch((e) => 
+        {
+            console.error(e);
+        });
+    }
+
     render(){
         return(
                 <form className="form-horizontal">
                     <div className="form-group">
                         <label htmlFor="eventName" className="col-sm-2 control-label">Name</label>
                         <div className="col-sm-10">
-                        <input type="text" id="eventName" className="form-control" placeholder="Event name" defaultValue={eventData.name}/>
+                        <input type="text" id="eventName" key={this.state.name} className="form-control" placeholder="Event name" defaultValue={this.state.name}/>
                         </div>
                     </div>
                     <div className="form-group">
@@ -135,7 +152,7 @@ class PlaceBlock extends React.Component{
             <div>
                 <div className="thumbnail ep-map">
                     <GoogleMap defaultCenter={center}
-                            apiKey={""}//get the key at https://developers.google.com/maps/documentation/javascript/get-api-key
+                    //apiKey={"AIzaSyDZoDUjdXqqq2L-WSpUF-_AHBuHI2zFI88"}//get the key at https://developers.google.com/maps/documentation/javascript/get-api-key
                             defaultZoom={zoom}>
                         <div className="ep-marker">place A</div>
                     </GoogleMap>
