@@ -21,7 +21,10 @@ class BasicInfoBlock extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = { name : "Event Name" };
+        this.state = { 
+            name : "Event Name",
+            desc : "Event Description"
+        };
         BasicInfoBlock.context = this;
     }
 
@@ -29,7 +32,10 @@ class BasicInfoBlock extends React.Component {
         axios
         .get(getBaseUrl()+`get`)
         .then((response) => {
-            this.setState({name: response.data.name});
+            this.setState({
+                name: response.data.name,
+                desc: response.data.desc
+            });
         })
         .catch((e) => 
         {
@@ -49,7 +55,7 @@ class BasicInfoBlock extends React.Component {
                     <div className="form-group">
                         <label htmlFor="eventDesc" className="col-sm-2 control-label">Description</label>
                         <div className="col-sm-10">
-                        <textarea id="eventDesc" className="form-control" rows="3" defaultValue={eventData.desc}></textarea>
+                        <textarea id="eventDesc" key={this.state.desc} className="form-control" rows="3" defaultValue={this.state.desc}></textarea>
                         </div>
                     </div>
                     <div className="form-group">

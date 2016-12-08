@@ -28,7 +28,8 @@ namespace EventPlanner.UI.Controllers.WebApi
 
             var data = new EventEdit
             {
-                Name = "Pavlova Oslava Narozek"
+                Name = "Pavlova Oslava Narozek",
+                Desc = "Po roce se zase shledame, dame neco dobryho k jidlu a piti a poprejeme Pavlovi k jeho 25. narozkam."
             };
 
             return new ObjectResult(data);

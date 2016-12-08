@@ -8,5 +8,6 @@ namespace EventPlanner.WebApiModels
     public class EventEdit
     {
         public string Name { get; set; }
+        public string Desc { get; set; }
     }
 }
