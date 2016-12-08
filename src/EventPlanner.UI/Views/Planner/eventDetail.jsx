@@ -7,11 +7,7 @@ import {GoogleMapLoader, GoogleMap, Marker} from "react-google-maps";
 import 'bootstrap/dist/css/bootstrap.css';
 import '../../Styles/site.css';
 import './eventEdit.jsx';
-
-const getBaseUrl = function () {
-    var url = window.location.protocol + "//" + window.location.host + "/" + window.location.pathname+"/";
-    return url;
-}
+import {getBaseUrl} from './commonScript.jsx';
 
 const getCssClass = function (userChoice)
 {

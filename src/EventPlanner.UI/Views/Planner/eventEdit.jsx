@@ -6,6 +6,7 @@ import GoogleMap from 'google-map-react';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import '../../Styles/site.css';
+import {getBaseUrl} from './commonScript.jsx';
 
 var eventData = {
     name : "Pavlova oslava narozek",
@@ -14,6 +15,8 @@ var eventData = {
     dates: ["2016-12-30T20:40:00", "2016-12-30T21:40:00", "2016-12-31T17:00:00"],
     places: [{ lat: 59.938043, lng: 30.337157 }, { lat: 59.938, lng: 30.33 }]
 }
+
+console.log(getBaseUrl());
 
 
 class BasicInfoBlock extends React.Component {
