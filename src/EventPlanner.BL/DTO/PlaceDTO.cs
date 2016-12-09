@@ -7,6 +7,8 @@ namespace EventPlanner.BL.DTO
 
         public double Y { get; set; }
 
+        public string Title { get; set; }
+
         public override bool Equals(object obj)
         {
             PlaceDTO fooItem = obj as PlaceDTO;

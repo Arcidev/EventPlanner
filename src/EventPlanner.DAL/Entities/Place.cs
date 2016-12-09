@@ -7,6 +7,8 @@ namespace EventPlanner.DAL.Entities
 
         public double Y { get; set; }
 
+        public string Title { get; set; }
+
         public Place(double x, double y)
         {
             X = x;

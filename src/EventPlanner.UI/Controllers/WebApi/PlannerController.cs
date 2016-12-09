@@ -52,30 +52,34 @@ namespace EventPlanner.UI.Controllers.WebApi
             var users = await eventFacade.GetUsersForEvent(eventId);
 
             var page = new EventPageVM();
-            var index = 1;
-            page.SelectedPlaceId = index;
+            page.SelectedPlaceId = 1;
 
             var id = ObjectId.Parse(eventId);
-            page.Tables = eventDto.Places.Select(place =>
+            page.Tables = new TableVM[eventDto.Places.Count];
+            page.Markers = new MarkerVM[eventDto.Places.Count];
+
+            var places = eventDto.Places.OrderBy(x => x.Title).ToList();
+            for (int i = 0; i < places.Count; i++)
             {
-                var placeUsers = users.Where(x => x.UserEvents[id].Choices.ContainsKey(index));
+                var placeUsers = users.Where(x => x.UserEvents[id].Choices.ContainsKey(i));
                 var rest = users.Where(x => !placeUsers.Any(y => x.Id == y.Id));
                 var userRows = placeUsers.Select(user => new UserRowVM()
                 {
                     UserName = user.Email,
-                    Choices = user.UserEvents[id].Choices[index++]
+                    Choices = user.UserEvents[id].Choices[i]
                 }).ToList();
                 userRows.AddRange(rest.Select(user => new UserRowVM()
                 {
                     UserName = user.Email
                 }));
 
-                return new TableVM()
+                var place = places.ElementAt(i);
+                page.Tables[i] = new TableVM()
                 {
-                    Key = index,
+                    Key = i,
                     Header = new HeaderVM()
                     {
-                        Dates = eventDto.Times.OrderBy(x => x).GroupBy(y => y.Date).Select(z => new DateVM
+                        Dates = eventDto.Times.OrderBy(x => x).GroupBy(y => y.Date).Select(z => new DateVM()
                         {
                             Value = z.Key.ToString("dd:MM:yyyy"),
                             Hours = z.Select(a => a.TimeOfDay.ToString("hh:mm")).ToArray()
@@ -83,12 +87,21 @@ namespace EventPlanner.UI.Controllers.WebApi
                     },
                     UserRows = userRows.ToArray()
                 };
-            }).ToArray();
+
+                page.Markers[i] = new MarkerVM()
+                {
+                    Key = i,
+                    Position = new PositionVM()
+                    {
+                        Lat = place.X,
+                        Lng = place.Y
+                    },
+                    Title = place.Title
+                };
+            }
 
             return new ObjectResult(page);
         }
-
-     
 
         [HttpPost]
         [Route("event/{eventId}/save-choices")]
