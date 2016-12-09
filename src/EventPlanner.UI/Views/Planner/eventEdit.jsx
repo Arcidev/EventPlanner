@@ -10,6 +10,29 @@ import {getBaseUrl} from './commonScript.jsx';
 
 var center = { lat: 49.1951, lng: 16.6068 };
 var zoom = 3;
+var markerCenter = null;
+
+const K_WIDTH = 40;
+const K_HEIGHT = 40;
+
+const greatPlaceStyle = {
+    // initially any map object has left top corner at lat lng coordinates
+    // it's on you to set object origin to 0,0 coordinates
+    position: 'absolute',
+    width: K_WIDTH,
+    height: K_HEIGHT,
+    left: -K_WIDTH / 2,
+    top: -K_HEIGHT / 2,
+
+    border: '5px solid #f44336',
+    borderRadius: K_HEIGHT,
+    backgroundColor: 'white',
+    textAlign: 'center',
+    color: '#3f51b5',
+    fontSize: 16,
+    fontWeight: 'bold',
+    padding: 4
+};
 
 class BasicInfoBlock extends React.Component {
 
@@ -209,14 +232,14 @@ class PlaceBlock extends React.Component{
 
     render(){
 
+        markerCenter = new google.maps.Marker({
+            position: center,
+            map: this.refs.map_canvas
+        });
+
         return(
             <div>
-                <div className="thumbnail ep-map">
-                    <GoogleMap defaultCenter={center}
-                            defaultZoom={zoom}>
-                        <div className="ep-marker">place A</div>
-                    </GoogleMap>
-                </div>
+ 
                 <form className="form-horizontal">
                     <button type="button" className="btn btn-default">Add place</button>
                     <div className="form-group">
@@ -244,6 +267,8 @@ class EventEditLayout extends React.Component {
                 }
         }
 
+        var mapUI = true;
+
         return (
             <div>
 
@@ -261,6 +286,12 @@ class EventEditLayout extends React.Component {
                 </div>
             <h2>Place</h2>
                 <div style={styles.panel} >
+                                   <div className="thumbnail ep-map">
+                    <GoogleMap id="map_canvas" ref="map_canvas" defaultCenter={center}
+                    defaultZoom={zoom} disableDefaultUI={mapUI}>
+    <div style={greatPlaceStyle} lat="49.1951" lng="16.6068">place A</div>
+</GoogleMap>
+</div>
                 <PlaceBlock/>
                 </div>
             </div>
