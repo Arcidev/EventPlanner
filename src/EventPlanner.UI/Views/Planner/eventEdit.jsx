@@ -8,9 +8,8 @@ import 'bootstrap/dist/css/bootstrap.css';
 import '../../Styles/site.css';
 import {getBaseUrl} from './commonScript.jsx';
 
-var eventData = {
-    places: [{ lat: 59.938043, lng: 30.337157 }, { lat: 59.938, lng: 30.33 }]
-}
+var center = { lat: 49.1951, lng: 16.6068 };
+var zoom = 3;
 
 class BasicInfoBlock extends React.Component {
 
@@ -186,10 +185,29 @@ class DateTimeBlock extends React.Component {
 }
 
 class PlaceBlock extends React.Component{
-    render(){
+    constructor(props) {
+        super(props);
 
-        var center = { lat: 59.938043, lng: 30.337157 };
-        var zoom = 9;
+        this.state = { 
+            markers: [],
+        };
+    }
+
+    componentDidMount() {
+        axios
+        .get(getBaseUrl()+`get`)
+        .then((response) => {
+            this.setState({
+                markers: response.data.markers
+            });
+        })
+        .catch((e) => 
+        {
+            console.error(e);
+        });
+    }
+
+    render(){
 
         return(
             <div>
