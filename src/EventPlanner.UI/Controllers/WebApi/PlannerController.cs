@@ -126,7 +126,7 @@ namespace EventPlanner.UI.Controllers.WebApi
             var user = await userFacade.CreateOrGetUser(editRow.UserName);
 
             UserEventDTO userEvent;
-            if (!user.UserEvents.TryGetValue(ObjectId.Parse(eventId), out userEvent))
+            if (user.UserEvents == null || !user.UserEvents.TryGetValue(ObjectId.Parse(eventId), out userEvent))
                 userEvent = new UserEventDTO();
 
             userEvent.Choices[editRow.TableKey] = editRow.Hours;
