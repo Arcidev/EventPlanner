@@ -10,7 +10,6 @@ import {getBaseUrl} from './commonScript.jsx';
 
 var center = { lat: 49.1951, lng: 16.6068 };
 var zoom = 3;
-var markerCenter = null;
 
 const K_WIDTH = 40;
 const K_HEIGHT = 40;
@@ -207,7 +206,7 @@ class DateTimeBlock extends React.Component {
     }
 }
 
-class PlaceBlock extends React.Component{
+class PlaceMarkers extends React.Component{
     constructor(props) {
         super(props);
 
@@ -231,15 +230,24 @@ class PlaceBlock extends React.Component{
     }
 
     render(){
+        return(
+            <div style={greatPlaceStyle} lat="49.1951" lng="16.6068">PlaceMarker1</div>
+        )
+    }
+}
 
-        markerCenter = new google.maps.Marker({
-            position: center,
-            map: this.refs.map_canvas
-        });
+class PlaceBlock extends React.Component{   
+
+    render(){
 
         return(
             <div>
- 
+                <div className="thumbnail ep-map">
+                    <GoogleMap defaultCenter={center} defaultZoom={zoom}>
+                    <div style={greatPlaceStyle} lat="49.1951" lng="16.6068">place A</div>
+                    <PlaceMarkers/>
+                    </GoogleMap>
+                </div>
                 <form className="form-horizontal">
                     <button type="button" className="btn btn-default">Add place</button>
                     <div className="form-group">
@@ -285,13 +293,7 @@ class EventEditLayout extends React.Component {
                 <DateTimeBlock/>
                 </div>
             <h2>Place</h2>
-                <div style={styles.panel} >
-                                   <div className="thumbnail ep-map">
-                    <GoogleMap id="map_canvas" ref="map_canvas" defaultCenter={center}
-                    defaultZoom={zoom} disableDefaultUI={mapUI}>
-    <div style={greatPlaceStyle} lat="49.1951" lng="16.6068">place A</div>
-</GoogleMap>
-</div>
+                <div style={styles.panel} >                                 
                 <PlaceBlock/>
                 </div>
             </div>
