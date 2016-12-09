@@ -11,5 +11,6 @@ namespace EventPlanner.WebApiModels
         public string Desc { get; set; }
         public string[] People { get; set; }
         public string[] Dates { get; set; }
+        public MarkerVM[] Markers { get; set; }
     }
 }

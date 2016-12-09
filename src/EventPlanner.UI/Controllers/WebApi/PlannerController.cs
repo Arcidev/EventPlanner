@@ -38,8 +38,26 @@ namespace EventPlanner.UI.Controllers.WebApi
                 Name = eventDto.Name,
                 Desc = eventDto.Description,
                 People = eventDto.SenderList.ToArray(),
-                Dates = eventDto.Times.Select(x => x.ToString()).ToArray()
+                Dates = eventDto.Times.Select(x => x.ToString("yyyy-MM-ddTHH:mm")).ToArray(),
+                Markers = new MarkerVM[eventDto.Places.Count]
             };
+
+            var places = eventDto.Places.OrderBy(x => x.Title).ToList();
+            for (int i = 0; i < places.Count; i++)
+            {
+                var place = places.ElementAt(i);
+                data.Markers[i] = new MarkerVM()
+                {
+                    // i => index of the place
+                    Key = i,
+                    Position = new PositionVM()
+                    {
+                        Lat = place.X,
+                        Lng = place.Y
+                    },
+                    Title = place.Title
+                };
+            }
 
             return new ObjectResult(data);
         }
