@@ -159,7 +159,7 @@ class DateTimeRows extends React.Component{
                 <div className="form-group">
                     <label htmlFor={rowId} className="col-sm-2 control-label">Datetime</label>
                     <div className="col-sm-10">
-                    <input type="datetime-local" id={rowId} className="form-control" defaultValue={date} value={date}/>
+                    <input type="datetime-local" id={rowId} className="form-control" value={date}/>
                     </div>
                 </div>
             );
