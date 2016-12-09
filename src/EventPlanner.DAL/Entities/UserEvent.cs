@@ -8,6 +8,6 @@ namespace EventPlanner.DAL.Entities
     public class UserEvent
     {
         [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfDocuments)]
-        public IDictionary<Place, IList<DateTime>> Choices { get; set; }
+        public IDictionary<int, int[]> Choices { get; set; }
     }
 }

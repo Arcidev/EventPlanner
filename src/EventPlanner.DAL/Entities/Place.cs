@@ -3,14 +3,14 @@ namespace EventPlanner.DAL.Entities
 {
     public class Place
     {
-        public int X { get; set; }
+        public double X { get; set; }
 
-        public int Y { get; set; }
+        public double Y { get; set; }
 
-        public Place(int x, int y)
+        public Place(double x, double y)
         {
-            this.X = x;
-            this.Y = y;
+            X = x;
+            Y = y;
         }
     }
 }

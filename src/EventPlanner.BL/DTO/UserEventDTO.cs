@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace EventPlanner.BL.DTO
 {
     public class UserEventDTO
     {
-        public IDictionary<PlaceDTO, IList<DateTime>> Choices { get; set; }
+        public IDictionary<int, int[]> Choices { get; set; }
     }
 }

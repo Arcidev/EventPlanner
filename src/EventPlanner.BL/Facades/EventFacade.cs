@@ -32,35 +32,6 @@ namespace EventPlanner.BL.Facades
             return Mapper.Map<IList<PlaceDTO>>(outputEvent.Places);
         }
 
-        public async Task<IDictionary<string,IList<DateAttendDTO>>> GetEventUsersTimes(string eventId, PlaceDTO place)
-        {
-            var users = await GetUsersForEvent(eventId);
-            ObjectId eventObjectId = ObjectId.Parse(eventId);
-            var outputEvent = await eventRepository.GetAsync(eventObjectId);
-
-            var choices = new List<DateAttendDTO>();
-            var output = new Dictionary<string, IList<DateAttendDTO>>();
-            IList<DateTime> eventTimes = outputEvent.Times;
-            
-            foreach (UserDTO user in users)
-            {
-                var times = user.UserEvents[eventObjectId].Choices[place];
-                foreach (DateTime time in outputEvent.Times)
-                {
-                    var attend = false;
-                    if (times.Contains(time)) {
-                        attend = true; 
-                        
-                    }
-                    choices.Add(new DateAttendDTO() { DateString = time.ToString(), IsUserAttending = attend });
-                }
-                choices = choices.OrderBy((x) => DateTime.Parse(x.DateString)).ToList();
-                output.Add( user.Email, choices);
-            }
-            return output;
-        }
-
-
         public async Task<IEnumerable<EventDTO>> GetUserEvents(string userId)
         {
             var user = await GetUser(userId);
@@ -88,6 +59,15 @@ namespace EventPlanner.BL.Facades
                 update = Builders<User>.Update.Set(x => x.CreatedEvents, new[] { entity.Id });
 
             await userRepository.UpdateAsync(user.Id, update);
+            return Mapper.Map<EventDTO>(entity);
+        }
+
+        public async Task<EventDTO> GetEvent(string id)
+        {
+            var entity = await eventRepository.GetAsync(ObjectId.Parse(id));
+            if (entity == null)
+                throw new ArgumentException("Event does not exist");
+
             return Mapper.Map<EventDTO>(entity);
         }
 

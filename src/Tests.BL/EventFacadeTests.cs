@@ -51,55 +51,14 @@ namespace Tests.BL
             var eventFacade = serviceProvider.GetRequiredService<IEventFacade>();
             await eventFacade.SignUpForEvent(e.Id, user.Id, new UserEventDTO()
             {
-                Choices = new Dictionary<PlaceDTO, IList<DateTime>>()
+                Choices = new Dictionary<int, int[]>()
                 {
-                    { new PlaceDTO() { X = 20, Y = 40 }, new[] { DateTime.Now, DateTime.Now.Date } }
+                    { 1, new[] { 1, 2 } }
                 }
             });
 
             var users = await eventFacade.GetUsersForEvent(e.Id);
             Assert.Equal(1, users.Count());
-        }
-
-        [Fact]
-        public async Task TestGetUserEventTimes()
-        {
-            var creator = await GetUser("test@mail.sk");
-            var user = await GetUser("muj@mail.cz");
-
-            var dateTimeNow = DateTime.UtcNow;
-            var dateNow = DateTime.UtcNow.Date;
-            var place1 = new PlaceDTO() { X = 20, Y = 40 };
-            var place2 = new PlaceDTO() { X = 50, Y = 60 };
-
-            var eventFacade = serviceProvider.GetRequiredService<IEventFacade>();
-            var e = new EventCreateDTO()
-            {
-                Times = new[] { dateTimeNow, dateNow },
-                Places = new[] { place1, place2 }
-            };
-
-            var createdEvent = await eventFacade.CreateEvent(e, creator.Id);
-            var dict = new Dictionary<PlaceDTO, IList<DateTime>>()
-            {
-                { place1, new List<DateTime> {dateNow } }
-            };
-            var userEvent = new UserEventDTO() { Choices = dict};
-
-            await eventFacade.SignUpForEvent(createdEvent.Id, user.Id, userEvent);
-
-            var output = await eventFacade.GetEventUsersTimes(createdEvent.Id, place1);
-            var expected = new Dictionary<string, IList<DateAttendDTO>>()
-            {
-                {
-                    user.Email, new List<DateAttendDTO>()
-                    {
-                        new DateAttendDTO() { DateString = dateNow.ToString(), IsUserAttending = true },
-                        new DateAttendDTO() { DateString = dateTimeNow.ToString(), IsUserAttending = false },
-                    }
-                }
-            };
-            Assert.Equal(expected, output);
         }
 
         private async Task<UserDTO> GetUser(string mail)

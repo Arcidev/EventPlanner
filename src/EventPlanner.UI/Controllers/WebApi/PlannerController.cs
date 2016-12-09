@@ -1,22 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using EventPlanner.BL.DTO;
+﻿using EventPlanner.BL.DTO;
+using EventPlanner.BL.Facades.Interfaces;
 using EventPlanner.WebApiModels;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+using MongoDB.Bson;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace EventPlanner.UI.Controllers.WebApi
 {
     public class PlannerController : Controller
     {
+        private readonly IEventFacade eventFacade;
+        private readonly IUserFacade userFacade;
+
+        public PlannerController(IEventFacade eventFacade, IUserFacade userFacade)
+        {
+            this.eventFacade = eventFacade;
+            this.userFacade = userFacade;
+        }
+
         [HttpGet]
         [Route("event/{eventId}/edit/get")]
-        public IActionResult GetEventEditData(string eventId)
+        public async Task<IActionResult> GetEventEditData(string eventId)
         {
+            var eventDto = await eventFacade.GetEvent(eventId);
             /*
             var eventData = {
             name : "Pavlova oslava narozek",
@@ -28,10 +35,10 @@ namespace EventPlanner.UI.Controllers.WebApi
 
             var data = new EventEdit
             {
-                Name = "Pavlova Oslava Narozek",
-                Desc = "Po roce se zase shledame, dame neco dobryho k jidlu a piti a poprejeme Pavlovi k jeho 25. narozkam.",
-                People = new[] { "john.smith77@gmail.com", "teri899@yahoo.com" },
-                Dates = new[] { "2016-12-30T20:40:00", "2016-12-30T21:40:00", "2016-12-31T17:00:00" }
+                Name = eventDto.Name,
+                Desc = eventDto.Description,
+                People = eventDto.SenderList.ToArray(),
+                Dates = eventDto.Times.Select(x => x.ToString()).ToArray()
             };
 
             return new ObjectResult(data);
@@ -39,83 +46,44 @@ namespace EventPlanner.UI.Controllers.WebApi
 
         [HttpGet]
         [Route("event/{eventId}/get")]
-        public IActionResult GetEventData(string eventId)
+        public async Task<IActionResult> GetEventData(string eventId)
         {
-            //0 -no, 1-yes, 2-maybe
-            var page = new EventPageVM
+            var eventDto = await eventFacade.GetEvent(eventId);
+            var users = await eventFacade.GetUsersForEvent(eventId);
+
+            var page = new EventPageVM();
+            var index = 1;
+            page.SelectedPlaceId = index;
+
+            var id = ObjectId.Parse(eventId);
+            page.Tables = eventDto.Places.Select(place =>
             {
-                SelectedPlaceId = 1,
-                Markers = new[] {
-                     new MarkerVM {
-                    Title = "Toulouse",
-                        Key = 1,
-                        Position = new PositionVM
+                var placeUsers = users.Where(x => x.UserEvents[id].Choices.ContainsKey(index));
+                var rest = users.Where(x => !placeUsers.Any(y => x.Id == y.Id));
+                var userRows = placeUsers.Select(user => new UserRowVM()
+                {
+                    UserName = user.Email,
+                    Choices = user.UserEvents[id].Choices[index++]
+                }).ToList();
+                userRows.AddRange(rest.Select(user => new UserRowVM()
+                {
+                    UserName = user.Email
+                }));
+
+                return new TableVM()
+                {
+                    Key = index,
+                    Header = new HeaderVM()
+                    {
+                        Dates = eventDto.Times.OrderBy(x => x).GroupBy(y => y.Date).Select(z => new DateVM
                         {
-                            Lat = 43.604363,
-                            Lng = 1.443363,
-                        }
+                            Value = z.Key.ToString("dd:MM:yyyy"),
+                            Hours = z.Select(a => a.TimeOfDay.ToString("hh:mm")).ToArray()
+                        }).ToArray()
                     },
-                    new MarkerVM {
-                    Title = "Zero",
-                        Key = 2,
-                        Position = new PositionVM
-                        {
-                            Lat = 0,
-                            Lng = 0,
-                        }
-                    }
-                },
-                Tables = new[] {
-                    new TableVM {
-                        Key = 1,
-                        UserRows = new UserRowVM [] {
-                            new UserRowVM {
-                                UserName = "Nick",
-                                Choices = new int [] { 1, 0, 2, 1, 2 }
-                            },
-                            new UserRowVM {
-                                UserName = "Judy",
-                                Choices = new int [] { 0, 0, 1, 1, 2 }
-                            },
-                        },
-                        Header = new HeaderVM
-                        {
-                            Dates = new[] {
-                                new DateVM {
-                                    Value = "2. 3. 2016",
-                                    Hours = new string [] { "8:00", "9:00", "10:00" }
-                                },
-                                new DateVM {
-                                    Value=  "2. 4. 2019",
-                                    Hours = new string [] { "10:00", "11:00" }
-                                }
-                            }
-                        }
-                    },
-                    new TableVM {
-                        Key = 2,
-                        UserRows = new[] {
-                            new UserRowVM {
-                                UserName = "Tom",
-                                Choices = new int [] { 1, 0, 1, 1}
-                            },
-                        },
-                        Header = new HeaderVM
-                        {
-                            Dates = new DateVM [] {
-                                new DateVM {
-                                    Value = "3. 4. 2016",
-                                    Hours = new string [] { "8:00", "9:00" }
-                                },
-                                new DateVM {
-                                    Value=  "2. 4. 2019",
-                                    Hours = new string [] { "10:00", "11:00" }
-                                }
-                            }
-                        }
-                    }
-                }
-            };
+                    UserRows = userRows.ToArray()
+                };
+            }).ToArray();
 
             return new ObjectResult(page);
         }
@@ -124,9 +92,16 @@ namespace EventPlanner.UI.Controllers.WebApi
 
         [HttpPost]
         [Route("event/{eventId}/save-choices")]
-        public void SaveUserChoices(string eventId, [FromBody]UserEditRowVM editRow)
+        public async Task SaveUserChoices(string eventId, [FromBody]UserEditRowVM editRow)
         {
-            //TODO save here
+            var user = await userFacade.CreateOrGetUser(editRow.UserName);
+
+            UserEventDTO userEvent;
+            if (!user.UserEvents.TryGetValue(ObjectId.Parse(eventId), out userEvent))
+                userEvent = new UserEventDTO();
+
+            userEvent.Choices[editRow.TableKey] = editRow.Hours;
+            await eventFacade.SignUpForEvent(eventId, user.Id, userEvent);
         }
     }
 }

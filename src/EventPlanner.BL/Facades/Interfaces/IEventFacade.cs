@@ -6,8 +6,6 @@ namespace EventPlanner.BL.Facades.Interfaces
 {
     public interface IEventFacade
     {
-        Task<IDictionary<string, IList<DateAttendDTO>>> GetEventUsersTimes(string eventId, PlaceDTO place);
-
         Task<IList<PlaceDTO>> GetEventPlaces(string eventId);
 
         Task<IEnumerable<EventDTO>> GetUserEvents(string userId);
@@ -17,5 +15,7 @@ namespace EventPlanner.BL.Facades.Interfaces
         Task SignUpForEvent(string eventId, string userId, UserEventDTO choices);
 
         Task<IEnumerable<UserDTO>> GetUsersForEvent(string eventId);
+
+        Task<EventDTO> GetEvent(string id);
     }
 }
