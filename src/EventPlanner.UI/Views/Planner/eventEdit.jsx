@@ -34,6 +34,7 @@ const greatPlaceStyle = {
 };
 
 var myEvent = null;
+var myPeople = [];
 
 class BasicInfoBlock extends React.Component {
 
@@ -65,7 +66,18 @@ class BasicInfoBlock extends React.Component {
     handleSave(){
         myEvent.name = this.refs.eventName.value;
         myEvent.desc = this.refs.eventDesc.value;
+
+        //people
+        var pplCount = 0;
+        myPeople.forEach(function(person) {
+            console.log("person:" + person + " count:" + pplCount + " value:" + document.getElementById(person).value);
+            myEvent.people[pplCount] =  document.getElementById(person).value;
+            pplCount++;
+            console.log(myEvent.people);
+        });
+
         console.log(myEvent);
+
         axios
              .post(getBaseUrl()+`save`, myEvent)
              .catch(() => alert('Something went wrong :( '));
@@ -127,17 +139,20 @@ class PeopleRows extends React.Component {
 
 
     render() {
+        myPeople = [];
         var rows = [];
-        var count = 1;
+        var count = 0;
         this.state.people.forEach(function (row)
         {
             var rowId = "personEmail" + count;
+            myPeople.push(rowId);
+
             rows.push
             (
                     <div className="form-group">
                         <label htmlFor={rowId} className="col-sm-2 control-label">Person's email</label>
                         <div className="col-sm-10">
-                            <input type="email" id={rowId} className="form-control" defaultValue={row} />
+                            <input type="email" id={rowId} ref={rowId} className="form-control" defaultValue={row} />
                         </div>
                     </div>
             );
