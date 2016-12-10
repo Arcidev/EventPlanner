@@ -109,6 +109,24 @@ namespace EventPlanner.BL.Facades
             return Mapper.Map<IEnumerable<UserDTO>>(users);
         }
 
+        public async Task EditEvent(string eventId, EventCreateDTO data)
+        {
+            var eventObjectId = ObjectId.Parse(eventId);
+            var editEvent = await GetEvent(eventId);
+
+            UpdateDefinition<Event> update;
+            var places = Mapper.Map<IList<Place>>(data.Places);
+            update = Builders<Event>.Update
+                .Set(x => x.Name, data.Name)
+                .Set(x => x.Description, data.Description)
+                .AddToSetEach(x => x.Times, data.Times);
+            if (editEvent.UserChoices.Keys.Count == 0)
+            {
+                update.Set(x => x.Places, places);
+            }
+            await eventRepository.UpdateAsync(eventObjectId, update);
+        }
+
         private async Task<User> GetUser(string userId)
         {
             var user = await userRepository.GetAsync(ObjectId.Parse(userId));

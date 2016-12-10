@@ -3,6 +3,8 @@ using EventPlanner.BL.Facades.Interfaces;
 using EventPlanner.WebApiModels;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -24,8 +26,23 @@ namespace EventPlanner.UI.Controllers.WebApi
         public async Task SaveEventEditData(string eventId, [FromBody]EventEdit changedEvent)
         {
             System.Diagnostics.Debug.WriteLine(changedEvent.ToJson());
-
-            var eventDto = await eventFacade.GetEvent(eventId);
+            List<PlaceDTO> places = changedEvent.Markers.Select(marker => {
+                return new PlaceDTO()
+                {
+                    Title = marker.Title,
+                    X = marker.Position.Lat,
+                    Y = marker.Position.Lng
+                };
+            }).ToList();
+            EventDTO eventDto = new EventDTO()
+            {
+                Name = changedEvent.Name,
+                Description = changedEvent.Desc,
+                SenderList = changedEvent.People,
+                Times = changedEvent.Dates.Select(x => DateTime.Parse(x)).ToList(),
+                Places = places
+            };
+            await eventFacade.EditEvent(eventId, eventDto);
         }
 
         [HttpGet]
