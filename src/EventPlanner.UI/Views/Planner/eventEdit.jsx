@@ -102,7 +102,7 @@ class PeopleRows extends React.Component {
         super(props);
 
         this.state = { 
-            people : ["john.smith@myexample.com"],
+            people : [],
         };
     }
 
@@ -120,6 +120,11 @@ class PeopleRows extends React.Component {
         });
     }
 
+    handleAdd(){
+        this.state.people.push("");
+        this.forceUpdate();
+    }
+
 
     render() {
         var rows = [];
@@ -132,7 +137,7 @@ class PeopleRows extends React.Component {
                     <div className="form-group">
                         <label htmlFor={rowId} className="col-sm-2 control-label">Person's email</label>
                         <div className="col-sm-10">
-                            <input type="email" id={rowId} className="form-control" value={row} />
+                            <input type="email" id={rowId} className="form-control" defaultValue={row} />
                         </div>
                     </div>
             );
@@ -140,9 +145,12 @@ class PeopleRows extends React.Component {
         });
 
      
-        return (         
+        return (   
             <div>
-                {rows}
+                <button type="button" className="btn btn-default" onClick={this.handleAdd.bind(this)}>Add people</button>
+                <div>
+                    {rows}
+                </div>
             </div>
         );
     }
@@ -151,8 +159,7 @@ class PeopleRows extends React.Component {
 class PeopleBlock extends React.Component {
     render(){
         return(
-            <form className="form-horizontal">
-                <button type="button" className="btn btn-default">Add people</button>
+            <form className="form-horizontal">             
                 <PeopleRows/>
             </form>
         );
