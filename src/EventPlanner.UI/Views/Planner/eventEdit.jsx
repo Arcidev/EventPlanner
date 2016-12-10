@@ -33,6 +33,8 @@ const greatPlaceStyle = {
     padding: 4
 };
 
+var myEvent = null;
+
 class BasicInfoBlock extends React.Component {
 
     constructor(props) {
@@ -52,11 +54,19 @@ class BasicInfoBlock extends React.Component {
                 name: response.data.name,
                 desc: response.data.desc
             });
+            myEvent = response.data;
         })
         .catch((e) => 
         {
             console.error(e);
         });
+    }
+
+    handleSave(){
+        console.log(getBaseUrl()+`save`);
+        axios
+             .post(getBaseUrl()+`save`, myEvent)
+             .catch(() => alert('Something went wrong :( '));
     }
 
     render(){
@@ -76,7 +86,7 @@ class BasicInfoBlock extends React.Component {
                     </div>
                     <div className="form-group">
                         <div className="col-sm-offset-2 col-sm-10">
-                        <button type="submit" className="btn btn-default">Save event</button>
+                        <button type="submit" className="btn btn-default" onClick={this.handleSave.bind(this)} >Save event</button>
                         </div>
                     </div>
                 </form>

@@ -19,6 +19,15 @@ namespace EventPlanner.UI.Controllers.WebApi
             this.userFacade = userFacade;
         }
 
+        [HttpPost]
+        [Route("event/{eventId}/edit/save")]
+        public async Task SaveEventEditData(string eventId, [FromBody]EventEdit changedEvent)
+        {
+            System.Diagnostics.Debug.WriteLine(changedEvent.ToJson());
+
+            var eventDto = await eventFacade.GetEvent(eventId);
+        }
+
         [HttpGet]
         [Route("event/{eventId}/edit/get")]
         public async Task<IActionResult> GetEventEditData(string eventId)
