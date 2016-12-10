@@ -84,30 +84,27 @@ namespace EventPlanner.BL.Facades
         {
             var user = await GetUser(userId);
             var eventObjectId = ObjectId.Parse(eventId);
-            if (await eventRepository.GetAsync(eventObjectId) == null)
-                throw new ArgumentException("Event does not exist");
+            var e = await eventRepository.GetAsync(eventObjectId);
 
             var entity = Mapper.Map<UserEvent>(choices);
-            UpdateDefinition<User> update;
-            if (user.UserEvents != null)
+            UpdateDefinition<Event> update;
+            if (e.UserChoices != null)
             {
-                user.UserEvents[eventObjectId] = entity;
-                update = Builders<User>.Update.Set(x => x.UserEvents, user.UserEvents);
+                e.UserChoices[user.Email] = entity;
+                update = Builders<Event>.Update.Set(x => x.UserChoices, e.UserChoices);
             }
             else
-                update = Builders<User>.Update.Set(x => x.UserEvents, new Dictionary<ObjectId, UserEvent>() { { eventObjectId, entity } });
+                update = Builders<Event>.Update.Set(x => x.UserChoices, new Dictionary<string, UserEvent>() { { user.Email, entity } });
 
-            await userRepository.UpdateAsync(user.Id, update);
+            await eventRepository.UpdateAsync(eventObjectId, update);
         }
 
 
         public async Task<IEnumerable<UserDTO>> GetUsersForEvent(string eventId)
         {
             var eventObjectId = ObjectId.Parse(eventId);
-            if (await eventRepository.GetAsync(eventObjectId) == null)
-                throw new ArgumentException("Event does not exist");
-
-            var filter = Builders<User>.Filter.ElemMatch(x => x.UserEvents, y => y.Key ==  eventObjectId);
+            var e = await GetEvent(eventId);
+            var filter = Builders<User>.Filter.Where(x => e.UserChoices.Keys.Contains(x.Email));
             var users = await userRepository.FindAsync(filter);
             return Mapper.Map<IEnumerable<UserDTO>>(users);
         }

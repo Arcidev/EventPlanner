@@ -11,9 +11,6 @@ namespace EventPlanner.DAL.Entities
 
         public string Email { get; set; }
 
-        [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfDocuments)]
-        public IDictionary<ObjectId, UserEvent> UserEvents { get; set; }
-
         public IList<ObjectId> CreatedEvents { get; set; }
     }
 }
