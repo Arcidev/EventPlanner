@@ -6,6 +6,7 @@ using System.Security.Claims;
 using EventPlanner.BL.Facades.Interfaces;
 using System.Threading.Tasks;
 using System.Linq;
+using EventPlanner.BL.DTO;
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace EventPlanner.UI.Controllers.Web
@@ -34,6 +35,16 @@ namespace EventPlanner.UI.Controllers.Web
         public IActionResult EventDetail(string eventId)
         {
             return View();
+        }
+
+        [HttpGet]
+        [Route("/event/new")]
+        public async Task<IActionResult> NewEvent()
+        {
+            var email = User.FindFirst(ClaimTypes.Email).Value;
+            var user = await userFacade.CreateOrGetUser(email);
+            var newEvent = await eventFacade.CreateEvent(new EventCreateDTO() { Name = "New event name"}, user.Id);
+            return RedirectToAction(nameof(EventEdit), new { eventId = newEvent.Id });
         }
 
         [HttpGet]
