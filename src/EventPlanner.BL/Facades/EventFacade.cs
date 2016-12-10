@@ -17,6 +17,15 @@ namespace EventPlanner.BL.Facades
         private IEventRepository eventRepository;
         private IUserRepository userRepository;
 
+        public async Task<IEnumerable<EventDTO>> GetInvitedToEvents(string userId)
+        {
+            var user = await GetUser(userId);
+            var filter = Builders<Event>.Filter.Where(e=> e.SenderList.Any( s=> s == user.Email));
+
+            var events = await eventRepository.FindAsync(filter);
+            return Mapper.Map<IEnumerable<EventDTO>>(events);
+        }
+
         public EventFacade(IEventRepository eventRepository, IUserRepository userRepository)
         {
             this.eventRepository = eventRepository;

@@ -50,14 +50,17 @@ namespace EventPlanner.UI.Controllers.Web
             var email = User.FindFirst(ClaimTypes.Email).Value;
             var user = await userFacade.CreateOrGetUser(email);
             var eventsCreated = await eventFacade.GetUserEvents(user.Id);
+            var invitedTo = await eventFacade.GetInvitedToEvents(user.Id);
 
             var model = new MyEventsPage()
             {
-                InvitedTo = new List<EventListItemVM>()
+                InvitedTo = invitedTo.Select(e=> new EventListItemVM()
                 {
-                    new EventListItemVM { CanEdit = false, EventId = "dasds", Name = "Super mega event"},
-                     new EventListItemVM { CanEdit = false, EventId = "sdasas", Name = "Ultra mega event"}
-                },
+                    CanEdit = false,
+                    Name = e.Name,
+                    EventId = e.Id
+                    
+                }).ToList(),
                 Created = eventsCreated.Select(x => new EventListItemVM()
                 {
                     CanEdit = true,

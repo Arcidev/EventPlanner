@@ -17,5 +17,7 @@ namespace EventPlanner.BL.Facades.Interfaces
         Task<IEnumerable<UserDTO>> GetUsersForEvent(string eventId);
 
         Task<EventDTO> GetEvent(string id);
+
+        Task<IEnumerable<EventDTO>> GetInvitedToEvents(string userId);
     }
 }
