@@ -207,7 +207,7 @@ class DateTimeBlock extends React.Component {
 }
 
 
-class PlaceBlock extends React.Component{   
+class GoogleMapBlock extends React.Component{   
        
     constructor(props) {
         super(props);
@@ -244,12 +244,18 @@ class PlaceBlock extends React.Component{
         });
 
         return(
-            <div>
                 <div className="thumbnail ep-map">
                     <GoogleMap defaultCenter={center} defaultZoom={zoom}>
                     {myMarkers}
                     </GoogleMap>
                 </div>
+            );
+    }
+}
+
+class PlaceBlock extends React.Component{
+    render(){
+        return(
                 <form className="form-horizontal">
                     <button type="button" className="btn btn-default">Add place</button>
                     <div className="form-group">
@@ -258,11 +264,12 @@ class PlaceBlock extends React.Component{
                         <input type="text" id="eventPlace0" className="form-control" />
                         </div>
                     </div>
-                </form>
-            </div>
-            );
+                </form>        
+        );
     }
 }
+
+
 
 class EventEditLayout extends React.Component {
     render() {
@@ -295,8 +302,11 @@ class EventEditLayout extends React.Component {
                 <DateTimeBlock/>
                 </div>
             <h2>Place</h2>
-                <div style={styles.panel} >                                 
+                <div style={styles.panel} >
+                <div>
+                <GoogleMapBlock/>
                 <PlaceBlock/>
+                </div>                                 
                 </div>
             </div>
         );
