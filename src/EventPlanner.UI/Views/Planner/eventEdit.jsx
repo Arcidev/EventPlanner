@@ -33,6 +33,8 @@ const greatPlaceStyle = {
     padding: 4
 };
 
+var myEvent = null;
+
 class BasicInfoBlock extends React.Component {
 
     constructor(props) {
@@ -52,11 +54,21 @@ class BasicInfoBlock extends React.Component {
                 name: response.data.name,
                 desc: response.data.desc
             });
+            myEvent = response.data;
         })
         .catch((e) => 
         {
             console.error(e);
         });
+    }
+
+    handleSave(){
+        myEvent.name = this.refs.eventName.value;
+        myEvent.desc = this.refs.eventDesc.value;
+        console.log(myEvent);
+        axios
+             .post(getBaseUrl()+`save`, myEvent)
+             .catch(() => alert('Something went wrong :( '));
     }
 
     render(){
@@ -65,18 +77,18 @@ class BasicInfoBlock extends React.Component {
                     <div className="form-group">
                         <label htmlFor="eventName" className="col-sm-2 control-label">Name</label>
                         <div className="col-sm-10">
-                        <input type="text" id="eventName" key={this.state.name} className="form-control" placeholder="Event name" defaultValue={this.state.name}/>
+                        <input type="text" id="eventName" ref="eventName" key={this.state.name} className="form-control" placeholder="Event name" defaultValue={this.state.name}/>
                         </div>
                     </div>
                     <div className="form-group">
                         <label htmlFor="eventDesc" className="col-sm-2 control-label">Description</label>
                         <div className="col-sm-10">
-                        <textarea id="eventDesc" key={this.state.desc} className="form-control" rows="3" defaultValue={this.state.desc}></textarea>
+                        <textarea id="eventDesc" ref="eventDesc" key={this.state.desc} className="form-control" rows="3" defaultValue={this.state.desc}></textarea>
                         </div>
                     </div>
                     <div className="form-group">
                         <div className="col-sm-offset-2 col-sm-10">
-                        <button type="submit" className="btn btn-default">Save event</button>
+                        <button type="submit" className="btn btn-default" onClick={this.handleSave.bind(this)} >Save event</button>
                         </div>
                     </div>
                 </form>
