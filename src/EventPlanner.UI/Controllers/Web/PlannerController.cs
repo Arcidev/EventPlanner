@@ -1,14 +1,27 @@
 ﻿using System.Collections.Generic;
 using EventPlanner.WebApiModels;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using EventPlanner.BL.Facades.Interfaces;
+using System.Threading.Tasks;
+using System.Linq;
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace EventPlanner.UI.Controllers.Web
 {
-    [Route("/[action]")]
+    [Authorize, Route("/[action]")]
     public class PlannerController : Controller
     {
+        private IUserFacade userFacade;
+        private IEventFacade eventFacade;
+
+        public PlannerController(IUserFacade userFacade, IEventFacade eventFacade)
+        {
+            this.userFacade = userFacade;
+            this.eventFacade = eventFacade;
+        }
+
         [HttpGet]
         [Route("/")]
         public IActionResult Index()
@@ -32,8 +45,12 @@ namespace EventPlanner.UI.Controllers.Web
 
         [HttpGet]
         [Route("/events")]
-        public IActionResult MyEvents()
+        public async Task<IActionResult> MyEvents()
         {
+            var email = User.FindFirst(ClaimTypes.Email).Value;
+            var user = await userFacade.CreateOrGetUser(email);
+            var eventsCreated = await eventFacade.GetUserEvents(user.Id);
+
             var model = new MyEventsPage()
             {
                 InvitedTo = new List<EventListItemVM>()
@@ -41,7 +58,12 @@ namespace EventPlanner.UI.Controllers.Web
                     new EventListItemVM { CanEdit = false, EventId = "dasds", Name = "Super mega event"},
                      new EventListItemVM { CanEdit = false, EventId = "sdasas", Name = "Ultra mega event"}
                 },
-                Created = new List<EventListItemVM>() { new EventListItemVM { CanEdit = true, EventId = "asdlasd", Name = "megagiga mega event" } },
+                Created = eventsCreated.Select(x => new EventListItemVM()
+                {
+                    CanEdit = true,
+                    EventId = x.Id,
+                    Name = x.Name
+                }).ToList()
             };
             return View(model);
         }
