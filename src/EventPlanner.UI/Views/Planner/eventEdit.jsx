@@ -206,12 +206,14 @@ class DateTimeBlock extends React.Component {
     }
 }
 
-class PlaceMarkers extends React.Component{
+
+class PlaceBlock extends React.Component{   
+       
     constructor(props) {
         super(props);
 
         this.state = { 
-            markers: [],
+            markers: []
         };
     }
 
@@ -230,22 +232,22 @@ class PlaceMarkers extends React.Component{
     }
 
     render(){
-        return(
-            <div style={greatPlaceStyle} lat="49.1951" lng="16.6068">PlaceMarker1</div>
-        )
-    }
-}
-
-class PlaceBlock extends React.Component{   
-
-    render(){
+     
+        var myMarkers = [];
+        var count = 1;
+        this.state.markers.forEach(function(marker){
+            var markerId = "markerId" + count;//marker.key
+            myMarkers.push(
+                <div id={markerId} style={greatPlaceStyle} lat={marker.position.lat} lng={marker.position.lng}>{marker.title}</div>
+            );
+            count++;
+        });
 
         return(
             <div>
                 <div className="thumbnail ep-map">
                     <GoogleMap defaultCenter={center} defaultZoom={zoom}>
-                    <div style={greatPlaceStyle} lat="49.1951" lng="16.6068">place A</div>
-                    <PlaceMarkers/>
+                    {myMarkers}
                     </GoogleMap>
                 </div>
                 <form className="form-horizontal">
@@ -300,6 +302,8 @@ class EventEditLayout extends React.Component {
         );
     }
 }
+
+
 
 const eventEdit = document.getElementById('event-edit');
 if (eventEdit) {
