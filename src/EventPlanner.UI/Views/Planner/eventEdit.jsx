@@ -34,7 +34,7 @@ const greatPlaceStyle = {
 };
 
 var myEvent = null;
-var myPeople = [];
+var PeopleRowIDs = [];
 
 class BasicInfoBlock extends React.Component {
 
@@ -64,19 +64,24 @@ class BasicInfoBlock extends React.Component {
     }
 
     handleSave(){
+        //basic
         myEvent.name = this.refs.eventName.value;
         myEvent.desc = this.refs.eventDesc.value;
 
         //people
         var pplCount = 0;
-        myPeople.forEach(function(person) {
-            console.log("person:" + person + " count:" + pplCount + " value:" + document.getElementById(person).value);
+        PeopleRowIDs.forEach(function(person) {
             myEvent.people[pplCount] =  document.getElementById(person).value;
             pplCount++;
-            console.log(myEvent.people);
         });
+        //remove empty people
+        for(var i = myEvent.people.length - 1; i >= 0; i--) {
+            if(myEvent.people[i] === "") {
+                myEvent.people.splice(i, 1);
+            }
+        }
 
-        console.log(myEvent);
+        console.log(myEvent.people);
 
         axios
              .post(getBaseUrl()+`save`, myEvent)
@@ -139,13 +144,13 @@ class PeopleRows extends React.Component {
 
 
     render() {
-        myPeople = [];
+        PeopleRowIDs = [];
         var rows = [];
         var count = 0;
         this.state.people.forEach(function (row)
         {
             var rowId = "personEmail" + count;
-            myPeople.push(rowId);
+            PeopleRowIDs.push(rowId);
 
             rows.push
             (
