@@ -24,21 +24,7 @@ namespace EventPlanner.UI.Controllers.WebApi
         public async Task<IActionResult> GetEventEditData(string eventId)
         {
             var eventDto = await eventFacade.GetEvent(eventId);
-
-            /*
-            var e = new EventCreateDTO()
-            {
-                Name = "Event in London and Paris",
-                Description = "This is event only for testing purposes with Markers",
-                SenderList = new[] { "rluks@seznam.cz", "luksromanluks@gmail.com" },
-                Times = new[] { System.DateTime.UtcNow, System.DateTime.UtcNow.Date },
-                Places = new[] { new PlaceDTO() { X = 51.5074, Y = 0.1278, Title = "London" }, new PlaceDTO() { X = 48.8566, Y = 2.3522, Title = "Paris" } }
-            };
-            var eventDtoTest = await eventFacade.CreateEvent(e, "5835b855b7fc292064f6f6da");
-            System.Diagnostics.Debug.WriteLine("eventDtoTest.Id:" + eventDtoTest.Id);
-            */
-            
-
+           
             var data = new EventEdit
             {
                 Name = eventDto.Name,
