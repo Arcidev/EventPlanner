@@ -12,6 +12,6 @@ namespace EventPlanner.WebApiModels
         public string[] People { get; set; }
         public string[] Dates { get; set; }
         public MarkerVM[] Markers { get; set; }
-        public bool areUsersSigned { get; set; }
+        public bool AreUsersSigned { get; set; }
     }
 }

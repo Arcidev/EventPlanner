@@ -66,7 +66,7 @@ namespace EventPlanner.UI.Controllers.WebApi
                 People = eventDto.SenderList.ToArray(),
                 Dates = eventDto.Times.Select(x => x.ToString("yyyy-MM-ddTHH:mm")).ToArray(),
                 Markers = new MarkerVM[eventDto.Places.Count],
-                areUsersSigned = eventDto.UserChoices.Keys.Count != 0
+                AreUsersSigned = eventDto.UserChoices.Keys.Count != 0
             };
 
             var places = eventDto.Places.OrderBy(x => x.Title).ToList();
