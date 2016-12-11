@@ -58,7 +58,7 @@ class BasicInfoBlock extends React.Component {
             });
             myEvent = response.data;
             console.log("Response data:");
-            console.log(myEvent);
+            console.log(JSON.stringify(myEvent));
         })
         .catch((e) => 
         {
@@ -92,7 +92,7 @@ class BasicInfoBlock extends React.Component {
         });
 
         console.log("Saving data:");
-        console.log(myEvent);
+        console.log(JSON.stringify(myEvent));
 
         axios
              .post(getBaseUrl()+`save`, myEvent)
@@ -202,7 +202,7 @@ class DateTimeRows extends React.Component{
         super(props);
 
         this.state = { 
-            dates : ["2016-01-01T10:10:00"],
+            dates : [],
         };
     }
 
@@ -221,7 +221,7 @@ class DateTimeRows extends React.Component{
     }
 
     handleAdd(){
-        this.state.dates.push("");
+        this.state.dates.push("2016-01-01T00:00:00");
         this.forceUpdate();
     }
 
