@@ -35,6 +35,7 @@ const greatPlaceStyle = {
 
 var myEvent = null;
 var PeopleRowIDs = [];
+var DateTimeRowIDs = [];
 
 class BasicInfoBlock extends React.Component {
 
@@ -56,6 +57,8 @@ class BasicInfoBlock extends React.Component {
                 desc: response.data.desc
             });
             myEvent = response.data;
+            console.log("Response data:");
+            console.log(myEvent);
         })
         .catch((e) => 
         {
@@ -70,7 +73,7 @@ class BasicInfoBlock extends React.Component {
 
         //people
         var pplCount = 0;
-        PeopleRowIDs.forEach(function(person) {
+        PeopleRowIDs.forEach(function(person) {          
             myEvent.people[pplCount] =  document.getElementById(person).value;
             pplCount++;
         });
@@ -81,7 +84,15 @@ class BasicInfoBlock extends React.Component {
             }
         }
 
-        console.log(myEvent.people);
+        //dates
+        var dtCount = 0;
+        DateTimeRowIDs.forEach(function(datevalue) {
+            myEvent.dates[dtCount] =  document.getElementById(datevalue).value;
+            dtCount++;
+        });
+
+        console.log("Saving data:");
+        console.log(myEvent);
 
         axios
              .post(getBaseUrl()+`save`, myEvent)
@@ -209,17 +220,26 @@ class DateTimeRows extends React.Component{
         });
     }
 
+    handleAdd(){
+        this.state.dates.push("");
+        this.forceUpdate();
+    }
+
     render(){
+        DateTimeRowIDs = [];
         var rows = [];
-        var count = 1;
+        var count = 0;
         this.state.dates.forEach(function(date){
+
             var rowId = "eventDate" + count;
+            DateTimeRowIDs.push(rowId);
+
             rows.push
             (
                 <div className="form-group">
                     <label htmlFor={rowId} className="col-sm-2 control-label">Datetime</label>
                     <div className="col-sm-10">
-                    <input type="datetime-local" id={rowId} className="form-control" value={date}/>
+                    <input type="datetime-local" id={rowId} className="form-control" defaultValue={date}/>
                     </div>
                 </div>
             );
@@ -227,9 +247,12 @@ class DateTimeRows extends React.Component{
         })
 
         return(
+            <div>
+                <button type="button" className="btn btn-default" onClick={this.handleAdd.bind(this)}>Add date</button>
                 <div>
                     {rows}
                 </div>
+            </div>
         );
     }
 }
@@ -238,7 +261,6 @@ class DateTimeBlock extends React.Component {
     render(){
         return(
             <form className="form-horizontal">
-                <button type="button" className="btn btn-default">Add date</button>
                 <DateTimeRows/>
             </form>
         );
