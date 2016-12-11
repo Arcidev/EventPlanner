@@ -11,6 +11,13 @@ import {getBaseUrl} from './commonScript.jsx';
 var center = { lat: 49.1951, lng: 16.6068 };
 var zoom = 3;
 var map = null;
+var markerIcon = {
+    path: google.maps.SymbolPath.CIRCLE,
+    scale: 15.0,
+    fillColor: "#FFF",
+    fillOpacity: 0.9,
+    strokeWeight: 0.7,
+}
 
 const K_WIDTH = 40;
 const K_HEIGHT = 40;
@@ -294,13 +301,20 @@ class GoogleMapBlock extends React.Component{
             console.error(e);
         });
 
-        var myLatlng = new google.maps.LatLng(-25.363882,131.044922);
         var myOptions = {
             zoom: zoom,
             center: center,
         }
 
-        map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);            
+        map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);  
+        
+        google.maps.event.addListener(map, 'click', function(event) {
+            var marker = new google.maps.Marker({
+                position: event.latLng, 
+                map: map,
+                icon: markerIcon
+            });
+        });
     }
 
     render(){
@@ -311,13 +325,7 @@ class GoogleMapBlock extends React.Component{
                 map: map,
                 title: marker.title,
                 label: marker.title,
-                icon: {
-                    path: google.maps.SymbolPath.CIRCLE,
-                    scale: 15.0,
-                    fillColor: "#FFF",
-                    fillOpacity: 0.9,
-                    strokeWeight: 0.7,
-                },
+                icon: markerIcon
             });
 
         });
