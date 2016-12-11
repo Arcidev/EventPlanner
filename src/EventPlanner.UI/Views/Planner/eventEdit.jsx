@@ -43,7 +43,7 @@ const greatPlaceStyle = {
     padding: 4
 };
 
-var myEvent = null;
+var myEvent = [];
 var PeopleRowIDs = [];
 var DateTimeRowIDs = [];
 
@@ -203,7 +203,6 @@ class PeopleRows extends React.Component {
             );
             count++;
         });
-
      
         return (   
             <div>
@@ -232,6 +231,7 @@ class DateTimeRows extends React.Component{
 
         this.state = { 
             dates : [],
+            areUsersSigned : false
         };
     }
 
@@ -240,21 +240,38 @@ class DateTimeRows extends React.Component{
         .get(getBaseUrl()+`get`)
         .then((response) => {
             this.setState({
-                dates: response.data.dates
+                dates: response.data.dates,
+                areUsersSigned: response.data.areUsersSigned
             });
+            myEvent = response.data;
         })
         .catch((e) => 
         {
             console.error(e);
         });
+
+        
     }
 
-    handleAdd(){
+    handleAdd(){  
+
+        if(this.state.areUsersSigned)
+            return;
+
         this.state.dates.push("2016-01-01T00:00:00");
         this.forceUpdate();
     }
 
     render(){
+
+        var areUsersSigned = this.state.areUsersSigned;
+        var btnClassName = "btn btn-default";
+        if(areUsersSigned){
+            btnClassName += " disabled";
+            console.log("areUsersSigned yep");
+        }
+        var btn = <button type="button" id="add_date_btn" ref="add_date_btn" className={btnClassName} onClick={this.handleAdd.bind(this)}>Add date</button>;
+
         DateTimeRowIDs = [];
         var rows = [];
         var count = 0;
@@ -268,27 +285,33 @@ class DateTimeRows extends React.Component{
             var LabelId = "eventDateLabelID" + count;
             var divColId = "eventDatedivColID" + count;
 
+            if(areUsersSigned)
+                var myInputRow = <input type="datetime-local" key={rowId} id={rowId} className="form-control" defaultValue={date} disabled/>;
+            else
+                var myInputRow = <input type="datetime-local" key={rowId} id={rowId} className="form-control" defaultValue={date}/>;
+
             rows.push
             (
                 <div key={divId} className="form-group">
                     <label key={LabelId} htmlFor={rowId} className="col-sm-2 control-label">Datetime</label>
                     <div key={divColId} className="col-sm-10">
-                    <input type="datetime-local" key={rowId} id={rowId} className="form-control" defaultValue={date}/>
+                        {myInputRow}
                     </div>
                 </div>
             );
             count++;
-        })
+        });                 
 
-        return(
-            <div>
-                <button type="button" className="btn btn-default" onClick={this.handleAdd.bind(this)}>Add date</button>
+   
+            return(
+                <div>
+                {btn}
                 <div>
                     {rows}
                 </div>
             </div>
         );
-    }
+        }
 }
 
 class DateTimeBlock extends React.Component {
