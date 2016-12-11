@@ -124,7 +124,7 @@ namespace EventPlanner.UI.Controllers.WebApi
                         Dates = eventDto.Times.OrderBy(x => x).GroupBy(y => y.Date).Select(z => new DateVM()
                         {
                             Value = z.Key.ToString("dd:MM:yyyy"),
-                            Hours = z.Select(a => a.TimeOfDay.ToString("hh:mm")).ToArray()
+                            Hours = z.Select(a => a.TimeOfDay.ToString(@"hh\:mm")).ToArray()
                         }).ToArray()
                     },
                 };
@@ -171,7 +171,7 @@ namespace EventPlanner.UI.Controllers.WebApi
 
             UserEventDTO userEvent;
             if (e.UserChoices == null || !e.UserChoices.TryGetValue(user.Email, out userEvent))
-                userEvent = new UserEventDTO();
+                userEvent = new UserEventDTO() { Choices = new Dictionary<int, int[]>() };
 
             userEvent.Choices[editRow.TableKey] = editRow.Hours;
             await eventFacade.SignUpForEvent(eventId, user.Id, userEvent);

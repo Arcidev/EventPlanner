@@ -116,14 +116,21 @@ namespace EventPlanner.BL.Facades
 
             UpdateDefinition<Event> update;
             var places = Mapper.Map<IList<Place>>(data.Places);
-            update = Builders<Event>.Update
-                .Set(x => x.Name, data.Name)
-                .Set(x => x.Description, data.Description)
-                .Set(x => x.SenderList, data.SenderList)
-                .Set(x => x.Times, data.Times);
             if (editEvent.UserChoices.Keys.Count == 0)
             {
-                update.Set(x => x.Places, places);
+                update = Builders<Event>.Update
+                    .Set(x => x.Name, data.Name)
+                    .Set(x => x.Description, data.Description)
+                    .Set(x => x.SenderList, data.SenderList)
+                    .Set(x => x.Times, data.Times)
+                    .Set(x => x.Places, places);
+            } else
+            {
+                update = Builders<Event>.Update
+                    .Set(x => x.Name, data.Name)
+                    .Set(x => x.Description, data.Description)
+                    .Set(x => x.SenderList, data.SenderList)
+                    .Set(x => x.Times, data.Times);
             }
             await eventRepository.UpdateAsync(eventObjectId, update);
         }
