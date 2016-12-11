@@ -1,4 +1,6 @@
 ﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson.Serialization.Options;
 using System;
 using System.Collections.Generic;
 
@@ -17,5 +19,8 @@ namespace EventPlanner.DAL.Entities
         public IList<Place> Places { get; set; }
 
         public IList<DateTime> Times { get; set; }
+
+        [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfDocuments)]
+        public IDictionary<string, UserEvent> UserChoices { get; set; }
     }
 }
