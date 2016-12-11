@@ -403,12 +403,14 @@ class GoogleMapBlock extends React.Component{
                 //icon: markerIcon
             });
 
-            marker.addListener('click', function() {
-                map.setZoom(zoom+2);
-                map.setCenter(marker.getPosition());
-                document.getElementById("eventPlace0").value = marker.title;
-                activeMarker = marker;
-            });
+            if(!areUsersSigned){
+                marker.addListener('click', function() {
+                    map.setZoom(zoom+2);
+                    map.setCenter(marker.getPosition());
+                    document.getElementById("eventPlace0").value = marker.title;
+                    activeMarker = marker;
+                });
+            }
 
             mapMarkers.push(marker);
 
