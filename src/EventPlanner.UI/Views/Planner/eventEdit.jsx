@@ -298,13 +298,9 @@ class GoogleMapBlock extends React.Component{
         var myOptions = {
             zoom: zoom,
             center: center,
-            //mapTypeId: google.maps.MapTypeId.SATELLITE
         }
 
-        map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-        
-        
- 
+        map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);            
     }
 
     render(){
@@ -317,36 +313,18 @@ class GoogleMapBlock extends React.Component{
                 label: marker.title,
                 icon: {
                     path: google.maps.SymbolPath.CIRCLE,
-                    scale: 8.5,
-                    fillColor: "#F00",
-                    fillOpacity: 0.7,
-                    strokeWeight: 0.4,
+                    scale: 15.0,
+                    fillColor: "#FFF",
+                    fillOpacity: 0.9,
+                    strokeWeight: 0.7,
                 },
             });
 
         });
      
-        var myMarkers = [];
-        var count = 1;
-        this.state.markers.forEach(function(marker){
-            var markerId = "markerId" + count;//marker.key
-            myMarkers.push(
-                <div id={markerId} style={greatPlaceStyle} lat={marker.position.lat} lng={marker.position.lng}>{marker.title}</div>
-            );
-            count++;
-        });
-
-
         return(
-        <div>
-                <div id="map_canvas" className="thumbnail ep-map">
-                </div>
-                <div className="thumbnail ep-map">
-                    <GoogleMap defaultCenter={center} defaultZoom={zoom}>
-                    {myMarkers}
-                    </GoogleMap>
-                </div>
-        </div>
+            <div id="map_canvas" className="thumbnail ep-map">
+            </div>
             );
     }
 }
