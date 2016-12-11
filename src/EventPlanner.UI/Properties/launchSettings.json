@@ -12,9 +12,7 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "GoogleClientId": "955658822338-ktd7sml61p70svs87v57el4a806555gh.apps.googleusercontent.com",
-        "GoogleSecret": "k9xyFJeMljNWepB0KOxpfLv1"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
     "EventPlanner.UI": {
