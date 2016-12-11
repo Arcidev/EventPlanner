@@ -20,6 +20,7 @@ var markerIcon = {
 }
 var mapMarkers = [];
 var activeMarker = null;
+var mapUsersSigned = false;
 
 const K_WIDTH = 40;
 const K_HEIGHT = 40;
@@ -343,6 +344,7 @@ class GoogleMapBlock extends React.Component{
                 markers: response.data.markers,
                 areUsersSigned: response.data.areUsersSigned
             });
+            mapUsersSigned = response.data.areUsersSigned;
         })
         .catch((e) => 
         {
@@ -355,26 +357,29 @@ class GoogleMapBlock extends React.Component{
         }
 
         map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);  
-        
+     
         google.maps.event.addListener(map, 'click', function(event) {
-            var marker = new google.maps.Marker({
-                position: event.latLng, 
-                map: map,
-                title: "",
-                label: "",
-                //icon: markerIcon,
-                animation: google.maps.Animation.DROP
-            });
+            if(!mapUsersSigned){
+                var marker = new google.maps.Marker({
+                    position: event.latLng, 
+                    map: map,
+                    title: "",
+                    label: "",
+                    //icon: markerIcon,
+                    animation: google.maps.Animation.DROP
+                });
 
-            marker.addListener('click', function() {
-                map.setZoom(zoom+2);
-                map.setCenter(marker.getPosition());
-                document.getElementById("eventPlace0").value = marker.title;
-                activeMarker = marker;
-            });
+                marker.addListener('click', function() {
+                    map.setZoom(zoom+2);
+                    map.setCenter(marker.getPosition());
+                    document.getElementById("eventPlace0").value = marker.title;
+                    activeMarker = marker;
+                });
 
-            mapMarkers.push(marker);
+                mapMarkers.push(marker);
+            }
         });
+
     }
 
     handleApply(){
@@ -415,6 +420,12 @@ class GoogleMapBlock extends React.Component{
             mapMarkers.push(marker);
 
         });
+
+        if(areUsersSigned){
+            var eventPlaceInput = <input type="text" id="eventPlace0" className="form-control" disabled/>;
+        }else{
+            var eventPlaceInput = <input type="text" id="eventPlace0" className="form-control" />;
+        }
      
         return(
             <div>
@@ -424,7 +435,7 @@ class GoogleMapBlock extends React.Component{
                     <div className="form-group">
                         <label htmlFor="eventPlace0" className="col-sm-2 control-label">Place name</label>
                         <div className="col-sm-10">
-                            <input type="text" id="eventPlace0" className="form-control" />
+                            {eventPlaceInput}
                         </div>
                     </div>
                     <div className="form-group">
