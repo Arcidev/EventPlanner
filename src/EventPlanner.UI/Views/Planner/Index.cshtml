@@ -17,13 +17,12 @@
         <div class="col-md-6">
             @if (Context?.User?.Identity?.IsAuthenticated == false)
             {
-                @Html.ActionLink("Login", "Login", "Account",  null, new { @class = "btn btn-lg btn-primary" });
+                @Html.ActionLink("Login", "Login", "Account", null, new { @class = "btn btn-lg btn-primary" });
             }
             else
             {
-                @Html.ActionLink("My events", "MyEvents", null, htmlAttributes:  new { @class = "btn btn-lg btn-primary" });
+                @Html.ActionLink("My events", "MyEvents", null, htmlAttributes: new { @class = "btn btn-lg btn-primary" });
             }
         </div>
     </div>
-    </div>
-    <script src="/bundle.js"></script>
+</div>
