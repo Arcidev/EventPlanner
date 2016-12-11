@@ -18,6 +18,8 @@ var markerIcon = {
     fillOpacity: 0.9,
     strokeWeight: 0.7,
 }
+var mapMarkers = [];
+var activeMarker = null;
 
 const K_WIDTH = 40;
 const K_HEIGHT = 40;
@@ -318,6 +320,13 @@ class GoogleMapBlock extends React.Component{
         });
     }
 
+    handleApply(){
+        var newPlaceName = "WMOWWOEEWW";
+        this.state.markers[0].title = newPlaceName;
+        activeMarker.setTitle(newPlaceName);
+        activeMarker.setLabel(newPlaceName);
+    }
+
     render(){
 
         this.state.markers.forEach(function(marker){
@@ -332,12 +341,27 @@ class GoogleMapBlock extends React.Component{
             marker.addListener('click', function() {
                 map.setZoom(zoom+2);
                 map.setCenter(marker.getPosition());
+                document.getElementById("eventPlace0").value = marker.title;
+                activeMarker = marker;
             });
+
+            mapMarkers.push(marker);
 
         });
      
         return(
+            <div>
             <div id="map_canvas" className="thumbnail ep-map">
+            </div>
+            <form className="form-horizontal">
+                    <button type="button" className="btn btn-default"  onClick={this.handleApply.bind(this)}>Apply</button>
+                    <div className="form-group">
+                        <label htmlFor="eventPlace0" className="col-sm-2 control-label">Place name</label>
+                        <div className="col-sm-10">
+                        <input type="text" id="eventPlace0" className="form-control" />
+                        </div>
+                    </div>
+            </form>  
             </div>
             );
     }
@@ -346,15 +370,7 @@ class GoogleMapBlock extends React.Component{
 class PlaceBlock extends React.Component{
     render(){
         return(
-                <form className="form-horizontal">
-                    <button type="button" className="btn btn-default">Add place</button>
-                    <div className="form-group">
-                        <label htmlFor="eventPlace0" className="col-sm-2 control-label">Place</label>
-                        <div className="col-sm-10">
-                        <input type="text" id="eventPlace0" className="form-control" />
-                        </div>
-                    </div>
-                </form>        
+      <div></div>
         );
     }
 }
