@@ -86,8 +86,10 @@ class BasicInfoBlock extends React.Component {
 
         //dates
         var dtCount = 0;
-        DateTimeRowIDs.forEach(function(datevalue) {
-            myEvent.dates[dtCount] =  document.getElementById(datevalue).value;
+        DateTimeRowIDs.forEach(function(dateID) {
+            var datetimeval = document.getElementById(dateID).value;;
+            var utcDate = new Date(datetimeval).toUTCString();
+            myEvent.dates[dtCount] =  utcDate;
             dtCount++;
         });
 
