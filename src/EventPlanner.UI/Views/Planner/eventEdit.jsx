@@ -302,9 +302,13 @@ class DateTimeRows extends React.Component{
             count++;
         });                 
 
-   
+            var warnUsersSigned;
+            if(areUsersSigned)
+                var warnUsersSigned = <div className="alert alert-warning"><strong>Warning!</strong> There are already users signed to this event. Unable to change values.</div>;
+
             return(
                 <div>
+                {warnUsersSigned}
                 {btn}
                 <div>
                     {rows}
@@ -421,7 +425,9 @@ class GoogleMapBlock extends React.Component{
 
         });
 
+        var warnUsersSigned;
         if(areUsersSigned){
+            var warnUsersSigned = <div className="alert alert-warning"><strong>Warning!</strong> There are already users signed to this event. Unable to change values.</div>;
             var eventPlaceInput = <input type="text" id="eventPlace0" className="form-control" disabled/>;
         }else{
             var eventPlaceInput = <input type="text" id="eventPlace0" className="form-control" />;
@@ -429,6 +435,7 @@ class GoogleMapBlock extends React.Component{
      
         return(
             <div>
+            {warnUsersSigned}
             <div id="map_canvas" className="thumbnail ep-map">
             </div>
             <form className="form-horizontal">
