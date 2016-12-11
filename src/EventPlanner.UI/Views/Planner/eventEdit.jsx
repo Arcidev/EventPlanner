@@ -312,7 +312,8 @@ class GoogleMapBlock extends React.Component{
             var marker = new google.maps.Marker({
                 position: event.latLng, 
                 map: map,
-                icon: markerIcon
+                //icon: markerIcon,
+                animation: google.maps.Animation.DROP
             });
         });
     }
@@ -325,7 +326,12 @@ class GoogleMapBlock extends React.Component{
                 map: map,
                 title: marker.title,
                 label: marker.title,
-                icon: markerIcon
+                //icon: markerIcon
+            });
+
+            marker.addListener('click', function() {
+                map.setZoom(zoom+2);
+                map.setCenter(marker.getPosition());
             });
 
         });
