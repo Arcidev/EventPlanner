@@ -3,6 +3,8 @@ using EventPlanner.BL.Facades.Interfaces;
 using EventPlanner.WebApiModels;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,6 +19,38 @@ namespace EventPlanner.UI.Controllers.WebApi
         {
             this.eventFacade = eventFacade;
             this.userFacade = userFacade;
+        }
+
+        [HttpPost]
+        [Route("event/{eventId}/edit/save")]
+        public async Task SaveEventEditData(string eventId, [FromBody]EventEdit changedEvent)
+        {
+            System.Diagnostics.Debug.WriteLine(changedEvent.ToJson());
+            List<PlaceDTO> places = changedEvent.Markers.Select(marker => {
+                return new PlaceDTO()
+                {
+                    Title = marker.Title,
+                    X = marker.Position.Lat,
+                    Y = marker.Position.Lng
+                };
+            }).ToList();
+            var dates = new List<DateTime>() { };
+            foreach (var date in changedEvent.Dates) {
+                DateTime dateValue;
+                if (DateTime.TryParse(date, out dateValue))
+                {
+                    dates.Add(dateValue);
+                }
+            }
+            EventDTO eventDto = new EventDTO()
+            {
+                Name = changedEvent.Name,
+                Description = changedEvent.Desc,
+                SenderList = changedEvent.People,
+                Times = dates,
+                Places = places
+            };
+            await eventFacade.EditEvent(eventId, eventDto);
         }
 
         [HttpGet]
@@ -62,7 +96,7 @@ namespace EventPlanner.UI.Controllers.WebApi
             var eventDto = await eventFacade.GetEvent(eventId);
 
             // Get all users on this event
-            var users = await eventFacade.GetUsersForEvent(eventId);
+            // var users = await eventFacade.GetUsersForEvent(eventId);
 
             var page = new EventPageVM();
             page.SelectedPlaceId = 0;
@@ -76,24 +110,7 @@ namespace EventPlanner.UI.Controllers.WebApi
             {
                 // Users that have some choices for this place
                 // i => index of the place
-                var placeUsers = users.Where(x => x.UserEvents[id].Choices.ContainsKey(i));
-
-                // Users that do not have any choice for this place
-                var rest = users.Where(x => !placeUsers.Any(y => x.Id == y.Id));
-
-                // Add users with choices
-                var userRows = placeUsers.Select(user => new UserRowVM()
-                {
-                    UserName = user.Email,
-                    // i => index of the place
-                    Choices = user.UserEvents[id].Choices[i]
-                }).ToList();
-
-                // Add users without choices
-                userRows.AddRange(rest.Select(user => new UserRowVM()
-                {
-                    UserName = user.Email
-                }));
+                var placeUsers = eventDto.UserChoices.Where(x => x.Value.Choices.ContainsKey(i));
 
                 // Get place we're working on
                 var place = places.ElementAt(i);
@@ -110,8 +127,24 @@ namespace EventPlanner.UI.Controllers.WebApi
                             Hours = z.Select(a => a.TimeOfDay.ToString("hh:mm")).ToArray()
                         }).ToArray()
                     },
-                    UserRows = userRows.ToArray()
                 };
+
+                // Add users with choices
+                var userRows = eventDto.UserChoices.Keys.Select(user =>
+                {
+                    int[] choices;
+                    if (!eventDto.UserChoices[user].Choices.TryGetValue(i, out choices))
+                    {
+                        // user without choices
+                        choices = page.Tables[i].Header.Dates.SelectMany(x => x.Hours).Select(x => -1).ToArray();
+                    }
+                    return new UserRowVM()
+                    {
+                        UserName = user,
+                        Choices = choices
+                    };
+                });
+                page.Tables[i].UserRows = userRows.ToArray();
 
                 page.Markers[i] = new MarkerVM()
                 {
@@ -134,9 +167,10 @@ namespace EventPlanner.UI.Controllers.WebApi
         public async Task SaveUserChoices(string eventId, [FromBody]UserEditRowVM editRow)
         {
             var user = await userFacade.CreateOrGetUser(editRow.UserName);
+            var e = await eventFacade.GetEvent(eventId);
 
             UserEventDTO userEvent;
-            if (user.UserEvents == null || !user.UserEvents.TryGetValue(ObjectId.Parse(eventId), out userEvent))
+            if (e.UserChoices == null || !e.UserChoices.TryGetValue(user.Email, out userEvent))
                 userEvent = new UserEventDTO();
 
             userEvent.Choices[editRow.TableKey] = editRow.Hours;

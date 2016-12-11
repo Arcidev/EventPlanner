@@ -33,6 +33,10 @@ const greatPlaceStyle = {
     padding: 4
 };
 
+var myEvent = null;
+var PeopleRowIDs = [];
+var DateTimeRowIDs = [];
+
 class BasicInfoBlock extends React.Component {
 
     constructor(props) {
@@ -52,11 +56,49 @@ class BasicInfoBlock extends React.Component {
                 name: response.data.name,
                 desc: response.data.desc
             });
+            myEvent = response.data;
+            console.log("Response data:");
+            console.log(JSON.stringify(myEvent));
         })
         .catch((e) => 
         {
             console.error(e);
         });
+    }
+
+    handleSave(){
+        //basic
+        myEvent.name = this.refs.eventName.value;
+        myEvent.desc = this.refs.eventDesc.value;
+
+        //people
+        var pplCount = 0;
+        PeopleRowIDs.forEach(function(person) {          
+            myEvent.people[pplCount] =  document.getElementById(person).value;
+            pplCount++;
+        });
+        //remove empty people
+        for(var i = myEvent.people.length - 1; i >= 0; i--) {
+            if(myEvent.people[i] === "") {
+                myEvent.people.splice(i, 1);
+            }
+        }
+
+        //dates
+        var dtCount = 0;
+        DateTimeRowIDs.forEach(function(dateID) {
+            var datetimeval = document.getElementById(dateID).value;;
+            var utcDate = new Date(datetimeval).toUTCString();
+            myEvent.dates[dtCount] =  utcDate;
+            dtCount++;
+        });
+
+        console.log("Saving data:");
+        console.log(JSON.stringify(myEvent));
+
+        axios
+             .post(getBaseUrl()+`save`, myEvent)
+             .catch(() => alert('Something went wrong :( '));
     }
 
     render(){
@@ -65,18 +107,18 @@ class BasicInfoBlock extends React.Component {
                     <div className="form-group">
                         <label htmlFor="eventName" className="col-sm-2 control-label">Name</label>
                         <div className="col-sm-10">
-                        <input type="text" id="eventName" key={this.state.name} className="form-control" placeholder="Event name" defaultValue={this.state.name}/>
+                        <input type="text" id="eventName" ref="eventName" key={this.state.name} className="form-control" placeholder="Event name" defaultValue={this.state.name}/>
                         </div>
                     </div>
                     <div className="form-group">
                         <label htmlFor="eventDesc" className="col-sm-2 control-label">Description</label>
                         <div className="col-sm-10">
-                        <textarea id="eventDesc" key={this.state.desc} className="form-control" rows="3" defaultValue={this.state.desc}></textarea>
+                        <textarea id="eventDesc" ref="eventDesc" key={this.state.desc} className="form-control" rows="3" defaultValue={this.state.desc}></textarea>
                         </div>
                     </div>
                     <div className="form-group">
                         <div className="col-sm-offset-2 col-sm-10">
-                        <button type="submit" className="btn btn-default">Save event</button>
+                        <button type="submit" className="btn btn-default" onClick={this.handleSave.bind(this)} >Save event</button>
                         </div>
                     </div>
                 </form>
@@ -90,7 +132,7 @@ class PeopleRows extends React.Component {
         super(props);
 
         this.state = { 
-            people : ["john.smith@myexample.com"],
+            people : [],
         };
     }
 
@@ -108,19 +150,27 @@ class PeopleRows extends React.Component {
         });
     }
 
+    handleAdd(){
+        this.state.people.push("");
+        this.forceUpdate();
+    }
+
 
     render() {
+        PeopleRowIDs = [];
         var rows = [];
-        var count = 1;
+        var count = 0;
         this.state.people.forEach(function (row)
         {
             var rowId = "personEmail" + count;
+            PeopleRowIDs.push(rowId);
+
             rows.push
             (
                     <div className="form-group">
                         <label htmlFor={rowId} className="col-sm-2 control-label">Person's email</label>
                         <div className="col-sm-10">
-                            <input type="email" id={rowId} className="form-control" value={row} />
+                            <input type="email" id={rowId} ref={rowId} className="form-control" defaultValue={row} />
                         </div>
                     </div>
             );
@@ -128,9 +178,12 @@ class PeopleRows extends React.Component {
         });
 
      
-        return (         
+        return (   
             <div>
-                {rows}
+                <button type="button" className="btn btn-default" onClick={this.handleAdd.bind(this)}>Add people</button>
+                <div>
+                    {rows}
+                </div>
             </div>
         );
     }
@@ -139,8 +192,7 @@ class PeopleRows extends React.Component {
 class PeopleBlock extends React.Component {
     render(){
         return(
-            <form className="form-horizontal">
-                <button type="button" className="btn btn-default">Add people</button>
+            <form className="form-horizontal">             
                 <PeopleRows/>
             </form>
         );
@@ -152,7 +204,7 @@ class DateTimeRows extends React.Component{
         super(props);
 
         this.state = { 
-            dates : ["2016-01-01T10:10:00"],
+            dates : [],
         };
     }
 
@@ -170,17 +222,26 @@ class DateTimeRows extends React.Component{
         });
     }
 
+    handleAdd(){
+        this.state.dates.push("2016-01-01T00:00:00");
+        this.forceUpdate();
+    }
+
     render(){
+        DateTimeRowIDs = [];
         var rows = [];
-        var count = 1;
+        var count = 0;
         this.state.dates.forEach(function(date){
+
             var rowId = "eventDate" + count;
+            DateTimeRowIDs.push(rowId);
+
             rows.push
             (
                 <div className="form-group">
                     <label htmlFor={rowId} className="col-sm-2 control-label">Datetime</label>
                     <div className="col-sm-10">
-                    <input type="datetime-local" id={rowId} className="form-control" value={date}/>
+                    <input type="datetime-local" id={rowId} className="form-control" defaultValue={date}/>
                     </div>
                 </div>
             );
@@ -188,9 +249,12 @@ class DateTimeRows extends React.Component{
         })
 
         return(
+            <div>
+                <button type="button" className="btn btn-default" onClick={this.handleAdd.bind(this)}>Add date</button>
                 <div>
                     {rows}
                 </div>
+            </div>
         );
     }
 }
@@ -199,7 +263,6 @@ class DateTimeBlock extends React.Component {
     render(){
         return(
             <form className="form-horizontal">
-                <button type="button" className="btn btn-default">Add date</button>
                 <DateTimeRows/>
             </form>
         );

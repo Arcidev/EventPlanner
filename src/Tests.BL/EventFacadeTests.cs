@@ -45,7 +45,7 @@ namespace Tests.BL
         [Fact]
         public async Task TestSignUpForEvent()
         {
-            var user = await GetUser("test@mail.sk");
+            var user = await GetUser("testing@mail.sk");
             var e = await CreateEvent(user.Id);
 
             var eventFacade = serviceProvider.GetRequiredService<IEventFacade>();
