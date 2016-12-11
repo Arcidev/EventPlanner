@@ -10,6 +10,7 @@ import {getBaseUrl} from './commonScript.jsx';
 
 var center = { lat: 49.1951, lng: 16.6068 };
 var zoom = 3;
+var map = null;
 
 const K_WIDTH = 40;
 const K_HEIGHT = 40;
@@ -295,14 +296,35 @@ class GoogleMapBlock extends React.Component{
 
         var myLatlng = new google.maps.LatLng(-25.363882,131.044922);
         var myOptions = {
-            zoom: 4,
-            center: myLatlng,
-            mapTypeId: google.maps.MapTypeId.SATELLITE
+            zoom: zoom,
+            center: center,
+            //mapTypeId: google.maps.MapTypeId.SATELLITE
         }
-        var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+
+        map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+        
+        
+ 
     }
 
     render(){
+
+        this.state.markers.forEach(function(marker){
+            var marker = new google.maps.Marker({
+                position: marker.position,
+                map: map,
+                title: marker.title,
+                label: marker.title,
+                icon: {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    scale: 8.5,
+                    fillColor: "#F00",
+                    fillOpacity: 0.7,
+                    strokeWeight: 0.4,
+                },
+            });
+
+        });
      
         var myMarkers = [];
         var count = 1;
@@ -313,6 +335,7 @@ class GoogleMapBlock extends React.Component{
             );
             count++;
         });
+
 
         return(
         <div>
