@@ -292,6 +292,14 @@ class GoogleMapBlock extends React.Component{
         {
             console.error(e);
         });
+
+        var myLatlng = new google.maps.LatLng(-25.363882,131.044922);
+        var myOptions = {
+            zoom: 4,
+            center: myLatlng,
+            mapTypeId: google.maps.MapTypeId.SATELLITE
+        }
+        var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
     }
 
     render(){
@@ -307,11 +315,15 @@ class GoogleMapBlock extends React.Component{
         });
 
         return(
+        <div>
+                <div id="map_canvas" className="thumbnail ep-map">
+                </div>
                 <div className="thumbnail ep-map">
                     <GoogleMap defaultCenter={center} defaultZoom={zoom}>
                     {myMarkers}
                     </GoogleMap>
                 </div>
+        </div>
             );
     }
 }
