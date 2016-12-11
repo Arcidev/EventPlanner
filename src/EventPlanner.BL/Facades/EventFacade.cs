@@ -119,7 +119,8 @@ namespace EventPlanner.BL.Facades
             update = Builders<Event>.Update
                 .Set(x => x.Name, data.Name)
                 .Set(x => x.Description, data.Description)
-                .AddToSetEach(x => x.Times, data.Times);
+                .Set(x => x.SenderList, data.SenderList)
+                .Set(x => x.Times, data.Times);
             if (editEvent.UserChoices.Keys.Count == 0)
             {
                 update.Set(x => x.Places, places);

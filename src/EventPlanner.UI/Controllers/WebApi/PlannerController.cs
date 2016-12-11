@@ -39,7 +39,7 @@ namespace EventPlanner.UI.Controllers.WebApi
                 Name = changedEvent.Name,
                 Description = changedEvent.Desc,
                 SenderList = changedEvent.People,
-                Times = changedEvent.Dates.Select(x => DateTime.Parse(x)).ToList(),
+                Times = changedEvent.Dates.Where(x => x.Length != 0).Select(x => DateTime.Parse(x)).ToList(),
                 Places = places
             };
             await eventFacade.EditEvent(eventId, eventDto);
