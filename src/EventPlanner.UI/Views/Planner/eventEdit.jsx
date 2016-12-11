@@ -268,7 +268,6 @@ class DateTimeRows extends React.Component{
         var btnClassName = "btn btn-default";
         if(areUsersSigned){
             btnClassName += " disabled";
-            console.log("areUsersSigned yep");
         }
         var btn = <button type="button" id="add_date_btn" ref="add_date_btn" className={btnClassName} onClick={this.handleAdd.bind(this)}>Add date</button>;
 
@@ -331,7 +330,8 @@ class GoogleMapBlock extends React.Component{
         super(props);
 
         this.state = { 
-            markers: []
+            markers: [],
+            areUsersSigned: false
         };
     }
 
@@ -340,7 +340,8 @@ class GoogleMapBlock extends React.Component{
         .get(getBaseUrl()+`get`)
         .then((response) => {
             this.setState({
-                markers: response.data.markers
+                markers: response.data.markers,
+                areUsersSigned: response.data.areUsersSigned
             });
         })
         .catch((e) => 
@@ -377,12 +378,20 @@ class GoogleMapBlock extends React.Component{
     }
 
     handleApply(){
+
+        if(this.state.areUsersSigned)
+            return;
+
         var newPlaceName = document.getElementById("eventPlace0").value;
         activeMarker.setTitle(newPlaceName);
         activeMarker.setLabel(newPlaceName);
     }
 
     render(){
+        var areUsersSigned = this.state.areUsersSigned;
+
+        var className = areUsersSigned ? ("btn btn-default disabled") : ("btn btn-default");
+        var btnApply = <button type="button" className={className}  onClick={this.handleApply.bind(this)}>Apply</button>;
 
         var markerCount = 0;
         this.state.markers.forEach(function(marker){
@@ -418,7 +427,7 @@ class GoogleMapBlock extends React.Component{
                     </div>
                     <div className="form-group">
                         <div className="col-sm-offset-2 col-sm-10">
-                            <button type="button" className="btn btn-default"  onClick={this.handleApply.bind(this)}>Apply</button>
+                            {btnApply}
                         </div>
                     </div>
             </form>  
