@@ -187,12 +187,17 @@ class PeopleRows extends React.Component {
             var rowId = "personEmail" + count;
             PeopleRowIDs.push(rowId);
 
+            //fixes warning fb.me/react-warning-keys
+            var divId = "personEmailDivID" + count;
+            var LabelId = "personEmailLabelID" + count;
+            var divColId = "personEmaildivColID" + count;
+
             rows.push
             (
-                    <div className="form-group">
-                        <label htmlFor={rowId} className="col-sm-2 control-label">Person's email</label>
-                        <div className="col-sm-10">
-                            <input type="email" id={rowId} ref={rowId} className="form-control" defaultValue={row} />
+                    <div key={divId} className="form-group">
+                        <label key={LabelId} htmlFor={rowId} className="col-sm-2 control-label">Person's email</label>
+                        <div key={divColId} className="col-sm-10">
+                            <input type="email" key={rowId} id={rowId} ref={rowId} className="form-control" defaultValue={row} />
                         </div>
                     </div>
             );
@@ -258,12 +263,17 @@ class DateTimeRows extends React.Component{
             var rowId = "eventDate" + count;
             DateTimeRowIDs.push(rowId);
 
+            //fixes warning fb.me/react-warning-keys
+            var divId = "eventDateDivID" + count;
+            var LabelId = "eventDateLabelID" + count;
+            var divColId = "eventDatedivColID" + count;
+
             rows.push
             (
-                <div className="form-group">
-                    <label htmlFor={rowId} className="col-sm-2 control-label">Datetime</label>
-                    <div className="col-sm-10">
-                    <input type="datetime-local" id={rowId} className="form-control" defaultValue={date}/>
+                <div key={divId} className="form-group">
+                    <label key={LabelId} htmlFor={rowId} className="col-sm-2 control-label">Datetime</label>
+                    <div key={divColId} className="col-sm-10">
+                    <input type="datetime-local" key={rowId} id={rowId} className="form-control" defaultValue={date}/>
                     </div>
                 </div>
             );
