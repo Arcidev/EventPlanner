@@ -387,11 +387,15 @@ class GoogleMapBlock extends React.Component{
             <div id="map_canvas" className="thumbnail ep-map">
             </div>
             <form className="form-horizontal">
-                    <button type="button" className="btn btn-default"  onClick={this.handleApply.bind(this)}>Apply</button>
                     <div className="form-group">
                         <label htmlFor="eventPlace0" className="col-sm-2 control-label">Place name</label>
                         <div className="col-sm-10">
-                        <input type="text" id="eventPlace0" className="form-control" />
+                            <input type="text" id="eventPlace0" className="form-control" />
+                        </div>
+                    </div>
+                    <div className="form-group">
+                        <div className="col-sm-offset-2 col-sm-10">
+                            <button type="button" className="btn btn-default"  onClick={this.handleApply.bind(this)}>Apply</button>
                         </div>
                     </div>
             </form>  
