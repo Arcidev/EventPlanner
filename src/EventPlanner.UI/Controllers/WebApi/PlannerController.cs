@@ -34,12 +34,20 @@ namespace EventPlanner.UI.Controllers.WebApi
                     Y = marker.Position.Lng
                 };
             }).ToList();
+            var dates = new List<DateTime>() { };
+            foreach (var date in changedEvent.Dates) {
+                DateTime dateValue;
+                if (DateTime.TryParse(date, out dateValue))
+                {
+                    dates.Add(dateValue);
+                }
+            }
             EventDTO eventDto = new EventDTO()
             {
                 Name = changedEvent.Name,
                 Description = changedEvent.Desc,
                 SenderList = changedEvent.People,
-                Times = changedEvent.Dates.Where(x => x.Length != 0).Select(x => DateTime.Parse(x)).ToList(),
+                Times = dates,
                 Places = places
             };
             await eventFacade.EditEvent(eventId, eventDto);

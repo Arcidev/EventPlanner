@@ -1,8 +1,9 @@
 ﻿<!DOCTYPE html>
-
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCbGlmbrdNDXr2nLExaLoFYrM4ee2mIzQM&callback=initMap">
+    </script>
     <title>Site</title>
 </head>
 <body>
@@ -11,17 +12,18 @@
             <div class="container">
                 <ul class="nav navbar-nav">
                     <li>
-                    @Html.ActionLink("Create your event", "NewEvent", null, htmlAttributes: new { @class = "" })
+                        @Html.ActionLink("Create your event", "NewEvent", null, htmlAttributes: new { @class = "" })
                     </li>
                     <li>
-                    @if (Context?.User?.Identity?.IsAuthenticated == true)
-                    {
-                        @Html.ActionLink("My events", "MyEvents", null, htmlAttributes: new { @class = "" });
-                    }
+                        @if (Context?.User?.Identity?.IsAuthenticated == true)
+                        {
+                            @Html.ActionLink("My events", "MyEvents", null, htmlAttributes: new { @class = "" })
+                            ;
+                        }
                     </li>
                 </ul>
                 @if (!User.Identity.IsAuthenticated)
-            {
+                {
                     @Html.ActionLink("Login", "Login", "Account", null, new { @class = "btn btn-success navbar-btn navbar-right" })
                 }
                 else
@@ -31,7 +33,8 @@
 
             </div>
         </nav>
-        @RenderBody()
+        @RenderBody()    
+        <script src="/bundle.js"></script>
     </div>
 </body>
 </html>
