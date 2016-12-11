@@ -326,6 +326,8 @@ class GoogleMapBlock extends React.Component{
             var marker = new google.maps.Marker({
                 position: event.latLng, 
                 map: map,
+                title: "",
+                label: "",
                 //icon: markerIcon,
                 animation: google.maps.Animation.DROP
             });
@@ -388,16 +390,6 @@ class GoogleMapBlock extends React.Component{
     }
 }
 
-class PlaceBlock extends React.Component{
-    render(){
-        return(
-      <div></div>
-        );
-    }
-}
-
-
-
 class EventEditLayout extends React.Component {
     render() {
 
@@ -432,7 +424,6 @@ class EventEditLayout extends React.Component {
                 <div style={styles.panel} >
                 <div>
                 <GoogleMapBlock/>
-                <PlaceBlock/>
                 </div>                                 
                 </div>
             </div>
