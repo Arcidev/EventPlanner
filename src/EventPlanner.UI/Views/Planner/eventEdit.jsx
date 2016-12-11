@@ -103,6 +103,18 @@ class BasicInfoBlock extends React.Component {
             dtCount++;
         });
 
+        //markers
+        var mrkrCount = 0;
+        mapMarkers.forEach(function(mapMarker){
+            var marker = {
+                "title" : mapMarker.title,
+                "key" : mrkrCount,
+                "position" : mapMarker.position
+            }
+            myEvent.markers[mrkrCount] = marker;
+            mrkrCount++;
+        });
+
         console.log("Saving data:");
         console.log(JSON.stringify(myEvent));
 
@@ -317,18 +329,27 @@ class GoogleMapBlock extends React.Component{
                 //icon: markerIcon,
                 animation: google.maps.Animation.DROP
             });
+
+            marker.addListener('click', function() {
+                map.setZoom(zoom+2);
+                map.setCenter(marker.getPosition());
+                document.getElementById("eventPlace0").value = marker.title;
+                activeMarker = marker;
+            });
+
+            mapMarkers.push(marker);
         });
     }
 
     handleApply(){
-        var newPlaceName = "WMOWWOEEWW";
-        this.state.markers[0].title = newPlaceName;
+        var newPlaceName = document.getElementById("eventPlace0").value;
         activeMarker.setTitle(newPlaceName);
         activeMarker.setLabel(newPlaceName);
     }
 
     render(){
 
+        var markerCount = 0;
         this.state.markers.forEach(function(marker){
             var marker = new google.maps.Marker({
                 position: marker.position,
