@@ -459,7 +459,7 @@ class GoogleMapBlock extends React.Component{
 class EventEditLayout extends React.Component {
     render() {
 
-        let styles = {
+        const styles = {
                 panel: {
                 border: "solid #f1f1f1",
                 borderWidth: "1 1px",
