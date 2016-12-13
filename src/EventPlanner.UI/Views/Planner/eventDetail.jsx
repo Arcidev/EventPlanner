@@ -118,6 +118,9 @@ class UserEditRow extends React.Component {
     handleSave(){
         axios
              .post(getBaseUrl()+`save-choices`, this.state.editRow)
+             .then(() => {
+                this.props.reloadCallback();
+            })
              .catch(() => alert('Something went wrong :( '));
     }
 
@@ -184,7 +187,7 @@ class EventTable extends React.Component {
             <TableHeader header={this.props.table.header} />
             <tbody>
                 {userRows}
-                <UserEditRow tableKey={this.props.table.key} hourCount={this.getTableHourCount()} />
+                <UserEditRow reloadCallback={this.props.reloadCallback} tableKey={this.props.table.key} hourCount={this.getTableHourCount()} />
             </tbody>
         </table>
     );
@@ -209,8 +212,7 @@ class EventDetailLayout extends React.Component {
         }
     }
 
-    componentDidMount() {
-        //makes post to /event/{eventId}/get handled by webapi therefore making use of event Id already present in the url
+    reloadTable () {
         axios
             .get(getBaseUrl() + `get`)
             .then(response => {
@@ -222,6 +224,11 @@ class EventDetailLayout extends React.Component {
                 console.error(e);
             });
         this.setState({});
+    }
+
+    componentDidMount() {
+        //makes post to /event/{eventId}/get handled by webapi therefore making use of event Id already present in the url
+        this.reloadTable();
     }
 
     onMarkerRightclick(index) {
@@ -282,7 +289,7 @@ class EventDetailLayout extends React.Component {
                     />
                 </div>
                 <div className="panel-heading"><h4>{this.getSelectedMarker().title}</h4></div>
-                <EventTable table={this.getSelectedTable()} editRow={this.state.editRow} />
+                <EventTable table={this.getSelectedTable()} reloadCallback={this.reloadTable.bind(this)} editRow={this.state.editRow} />
             </div>
         );
     }

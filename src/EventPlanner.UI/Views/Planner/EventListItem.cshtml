@@ -1,0 +1,24 @@
+﻿@model EventPlanner.WebApiModels.EventListItemVM
+
+<div class="row ep-event">
+    <h4 class="col-md-3">@Model.Name</h4>
+    <div class="col-md-9">
+        <div class="btn-group pull-right">
+            <div class="navbar-form navbar-left">
+                <div class="form-group">
+                    <input type="text" class="form-control ep-width500" value="@(Url.Action("EventDetail", "Planner", new {Model.EventId}, Url.ActionContext.HttpContext.Request.Scheme))" id="@Model.IdTag-@Model.EventId" readonly />
+                </div>
+            </div>
+            @if (Model.CanEdit)
+            {
+                @Html.ActionLink("Edit event", "EventEdit", new { Model.EventId }, new { @class = "btn btn-default navbar-btn nav-pills" })
+            }
+            <button class="btn btn-default navbar-btn nav-pills" onclick="javascript: copyToClippboard('@Model.IdTag-@Model.EventId')"><span class="glyphicon glyphicon-link"></span>Copy link</button>
+
+            @Html.ActionLink("Fill in", "EventDetail", new { Model.EventId }, new { @class = "btn btn-default navbar-btn nav-pills" })
+        </div>
+    </div>
+</div>
+
+
+

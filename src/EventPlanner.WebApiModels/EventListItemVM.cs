@@ -9,5 +9,6 @@ namespace EventPlanner.WebApiModels
         public string Name { get; set; }
         public bool CanEdit { get; set; }
         public string EventId { get; set; }
+        public string IdTag { get; set; }
     }
 }

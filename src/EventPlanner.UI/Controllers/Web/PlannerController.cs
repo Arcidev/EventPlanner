@@ -70,14 +70,15 @@ namespace EventPlanner.UI.Controllers.Web
                 {
                     CanEdit = false,
                     Name = e.Name,
-                    EventId = e.Id
-                    
+                    EventId = e.Id,
+                    IdTag = "my"
                 }).ToList(),
-                Created = eventsCreated.Select(x => new EventListItemVM()
+                Created = eventsCreated.Select(e => new EventListItemVM()
                 {
                     CanEdit = true,
-                    EventId = x.Id,
-                    Name = x.Name
+                    EventId = e.Id,
+                    Name = e.Name,
+                    IdTag = "inv"
                 }).ToList()
             };
             return View(model);

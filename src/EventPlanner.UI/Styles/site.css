@@ -27,6 +27,11 @@
   border-color: #cd5c5c transparent transparent transparent;
 }
 
+input[type=text].ep-width500 {
+    width: 500px;
+}
+
+
 .ep-width200 {
     width: 200px;
 }
